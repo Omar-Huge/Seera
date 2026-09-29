@@ -1,0 +1,1185 @@
+<title>Seera</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Crect%20width%3D%2240%22%20height%3D%2240%22%20rx%3D%2211%22%20fill%3D%22%232448C9%22/%3E%3Cpath%20d%3D%22M32%209.5V19.5a3%203%200%200%201-6%200V13.5M26%2019.5a3%203%200%200%201-6%200V16.5M20%2019.5c0%206.5-3%209.5-6.5%209.5S8%2026.5%208%2022.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223%22%20fill%3D%22%23FFE45C%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;600&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
+<style>
+:root {
+  --bg: #F2F4F7;
+  --surface: #FFFFFF;
+  --surface-2: #F7F8FA;
+  --ink: #141B26;
+  --muted: #5A6576;
+  --line: #DBE0E7;
+  --pen: #2448C9;
+  --pen-soft: #E6EBFB;
+  --hl: #FFE45C;
+  --hl-ink: #1D1A05;
+  --good: #1B8456;
+  --good-bg: #E3F4EB;
+  --warn: #A96E12;
+  --warn-bg: #FBF0DC;
+  --bad: #C0392F;
+  --bad-bg: #FBE6E4;
+  --shadow: 0 1px 2px rgba(20, 27, 38, .06), 0 8px 24px rgba(20, 27, 38, .06);
+  --sans: "Schibsted Grotesk", "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1219;
+    --surface: #151C26;
+    --surface-2: #1A2230;
+    --ink: #E6EAF0;
+    --muted: #97A3B4;
+    --line: #273143;
+    --pen: #86A2FF;
+    --pen-soft: #1D2742;
+    --hl: #E7CC43;
+    --hl-ink: #16130A;
+    --good: #51C48D;
+    --good-bg: #13291F;
+    --warn: #E2AA4E;
+    --warn-bg: #2C2213;
+    --bad: #F0776E;
+    --bad-bg: #321818;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1219;
+  --surface: #151C26;
+  --surface-2: #1A2230;
+  --ink: #E6EAF0;
+  --muted: #97A3B4;
+  --line: #273143;
+  --pen: #86A2FF;
+  --pen-soft: #1D2742;
+  --hl: #E7CC43;
+  --hl-ink: #16130A;
+  --good: #51C48D;
+  --good-bg: #13291F;
+  --warn: #E2AA4E;
+  --warn-bg: #2C2213;
+  --bad: #F0776E;
+  --bad-bg: #321818;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+}
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-inline: 20px;
+  padding-block: 24px 72px;
+  display: grid;
+  gap: 28px;
+}
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--pen); outline-offset: 2px; border-radius: 6px; }
+
+/* Header */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand svg { flex: none; }
+.brand .logo { border-radius: 11px; box-shadow: 0 2px 8px rgba(36, 72, 201, .28); }
+.brand h1 { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+.brand p { color: var(--muted); font-size: 13.5px; }
+.brand h1 .ar { font-family: "IBM Plex Sans Arabic", var(--sans); font-weight: 600; font-size: .8em; color: var(--pen); margin-inline-start: 6px; letter-spacing: 0; }
+
+/* Intake */
+.drop {
+  position: relative; display: grid; place-items: center; text-align: center;
+  min-height: 340px; padding: 40px 20px; border-radius: 20px; cursor: pointer;
+  border: 2px dashed var(--line); background: var(--surface);
+  transition: border-color .15s, background .15s;
+}
+.drop:hover, .drop.over { border-color: var(--pen); background: var(--pen-soft); }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.drop:focus-within { border-color: var(--pen); }
+.drop-inner { display: grid; gap: 10px; justify-items: center; }
+.drop strong { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+.drop .or { color: var(--muted); font-size: 14.5px; }
+.drop .or u { color: var(--pen); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.formats { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+.role-wrap { display: grid; justify-items: center; gap: 10px; margin-top: 14px; }
+.linkbtn { background: none; border: 0; padding: 4px 6px; cursor: pointer; color: var(--pen); font-size: 14px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.role-box { width: 100%; max-width: 640px; display: grid; gap: 6px; }
+.role-box label { font-weight: 600; font-size: 14px; }
+.role-box label span { color: var(--muted); font-weight: 400; }
+.role-box textarea {
+  width: 100%; min-height: 96px; resize: vertical; padding: 10px 12px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--surface); font: inherit; font-size: 14px; line-height: 1.5;
+}
+.role-box textarea:focus { border-color: var(--pen); outline: none; box-shadow: 0 0 0 3px var(--pen-soft); }
+.fmt { font-family: var(--mono); font-size: 11.5px; padding: 2px 8px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 9px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); font-weight: 600; font-size: 14px;
+}
+.btn:hover { border-color: var(--pen); color: var(--pen); }
+.btn.primary { background: var(--pen); border-color: var(--pen); color: var(--surface); }
+.btn.primary:hover { filter: brightness(1.08); color: var(--surface); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Progress + messages */
+.panel { padding: 20px 22px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); display: grid; gap: 14px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.steps li { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; color: var(--muted); }
+.steps li[data-s="doing"] { color: var(--ink); font-weight: 600; }
+.steps li[data-s="done"] { color: var(--ink); }
+.dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; }
+li[data-s="done"] .dot { background: var(--good); border-color: var(--good); }
+li[data-s="done"] .dot::after { content: ""; width: 6px; height: 9px; border: solid var(--surface); border-width: 0 2px 2px 0; transform: translateY(-1px) rotate(45deg); }
+li[data-s="doing"] .dot { border-color: var(--pen); border-top-color: transparent; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.steps .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+.panel-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.panel-row p { color: var(--muted); font-size: 13.5px; }
+.msg { border-color: var(--bad); background: var(--bad-bg); }
+.msg h3 { font-size: 16px; }
+.msg.info { border-color: var(--warn); background: var(--warn-bg); }
+
+/* Report */
+.rolebar { display: grid; gap: 12px; padding: 14px 18px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.rb-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.rb-text { display: grid; gap: 2px; min-width: 0; }
+.rb-text span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.rb-text b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60ch; }
+.rb-edit { display: grid; gap: 10px; }
+.rb-edit textarea {
+  width: 100%; min-height: 96px; resize: vertical; padding: 10px 12px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--surface-2); font: inherit; font-size: 14px; line-height: 1.5;
+}
+.rb-edit textarea:focus { border-color: var(--pen); outline: none; box-shadow: 0 0 0 3px var(--pen-soft); }
+.rb-edit .actions { justify-content: flex-end; }
+.report { display: grid; gap: 22px; }
+.example-note {
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  padding: 10px 14px; border-radius: 12px; background: var(--hl); color: var(--hl-ink); font-size: 14px; font-weight: 500;
+}
+.example-note b { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+.eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: block; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 22px; }
+
+.score-card { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; box-shadow: var(--shadow); }
+.ring { position: relative; width: 148px; height: 148px; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring .num { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+.ring .num b { font-size: 46px; font-weight: 800; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+.ring .num small { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+.ring circle { fill: none; stroke-width: 11; }
+.ring .track { stroke: var(--surface-2); }
+.ring .val { stroke-linecap: round; transition: stroke-dashoffset .9s cubic-bezier(.2, .7, .2, 1); }
+.verdict { display: grid; gap: 10px; }
+.verdict h2 { font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+.band { display: inline-block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; font-weight: 500; justify-self: start; }
+.b-good { color: var(--good); background: var(--good-bg); }
+.b-warn { color: var(--warn); background: var(--warn-bg); }
+.b-bad { color: var(--bad); background: var(--bad-bg); }
+.verdict p { color: var(--muted); max-width: 60ch; }
+.impression { grid-column: 1 / -1; display: grid; gap: 4px; padding: 12px 14px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); }
+.impression span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.snapshot dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; }
+.snapshot dt { color: var(--muted); font-size: 13.5px; }
+.snapshot dd { margin: 0; font-weight: 600; }
+.snapshot .name { font-size: 20px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 2px; }
+.snapshot .headline { color: var(--muted); margin-bottom: 14px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font-size: 13px; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); }
+.skills { margin-top: 14px; }
+
+/* Score breakdown: gauge tiles */
+.bd-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.bd-head h2 { margin: 0; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.legend i { width: 8px; height: 8px; border-radius: 2px; display: block; }
+.gauges { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.gauge {
+  display: grid; grid-template-rows: auto auto auto 1fr; justify-items: center; text-align: center; gap: 6px;
+  padding: 18px 12px 16px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line);
+  position: relative; overflow: hidden;
+}
+.gauge::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--gc); }
+.gauge .dial { position: relative; width: 116px; max-width: 100%; aspect-ratio: 1; }
+.gauge svg { width: 100%; height: 100%; overflow: visible; }
+.gauge .arc-track { fill: none; stroke: var(--line); stroke-width: 9; stroke-linecap: round; }
+.gauge .arc-val { fill: none; stroke: var(--gc); stroke-width: 9; stroke-linecap: round; transition: stroke-dasharray 1s cubic-bezier(.2, .7, .2, 1); }
+.gauge .tk { stroke: var(--muted); stroke-width: 1.5; stroke-linecap: round; opacity: .55; }
+.gauge .val { position: absolute; inset: 0; display: grid; place-items: center; padding-top: 4px; }
+.gauge .val b { font-size: 34px; font-weight: 800; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+.gauge .val small { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--gc); margin-top: 4px; font-weight: 500; }
+.gauge .g-lbl { font-weight: 700; font-size: 14.5px; line-height: 1.3; margin-top: -6px; }
+.gauge .g-w { font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; }
+.gauge .g-note { font-size: 13px; color: var(--muted); line-height: 1.45; align-self: start; }
+.gc-good { --gc: var(--good); }
+.gc-warn { --gc: var(--warn); }
+.gc-bad { --gc: var(--bad); }
+
+/* Lists */
+.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.items li { display: grid; gap: 4px; padding-left: 14px; border-left: 3px solid var(--line); }
+.items.good li { border-left-color: var(--good); }
+.items.bad li { border-left-color: var(--bad); }
+.items .pt { font-weight: 600; }
+.quote { font-size: 13.5px; color: var(--muted); font-style: italic; }
+.fix { font-size: 13.5px; }
+.fix b { color: var(--good); font-weight: 600; font-style: normal; }
+.card h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; letter-spacing: -.01em; }
+.card h2 .count { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+
+/* Questions */
+.q-loading { display: flex; gap: 10px; align-items: center; color: var(--muted); padding: 6px 0; }
+.q-loading .dot { border-color: var(--pen); border-top-color: transparent; animation: spin .8s linear infinite; flex: none; }
+.q-loading .meta { font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.q-error { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 12px 14px; border-radius: 10px; background: var(--bad-bg); }
+.q-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter { cursor: pointer; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 13.5px; font-weight: 500; }
+.filter[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.filter .c { font-family: var(--mono); font-size: 11.5px; opacity: .7; margin-left: 4px; }
+.qs { display: grid; gap: 10px; }
+details.q { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+details.q[open] { border-color: var(--pen); box-shadow: var(--shadow); }
+details.q summary { list-style: none; cursor: pointer; padding: 14px 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start; }
+details.q summary::-webkit-details-marker { display: none; }
+details.q summary .qt { font-weight: 600; font-size: 15.5px; }
+details.q summary .chev { color: var(--muted); transition: transform .15s; margin-top: 2px; }
+details.q[open] summary .chev { transform: rotate(180deg); }
+.cat { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 7px; border-radius: 6px; white-space: nowrap; margin-top: 2px; }
+.cat-technical { background: var(--pen-soft); color: var(--pen); }
+.cat-behavioral { background: var(--good-bg); color: var(--good); }
+.cat-cv { background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); }
+.cat-redflag { background: var(--bad-bg); color: var(--bad); }
+.q-body { padding: 0 16px 18px; display: grid; gap: 16px; }
+.q-body .sub span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px; }
+.q-body ul { margin: 0; padding-left: 18px; display: grid; gap: 3px; }
+.sample {
+  margin: 0; padding: 14px 16px; border-radius: 10px; background: var(--good-bg); border-left: 3px solid var(--good);
+  font-size: 14.5px; line-height: 1.65;
+}
+.weak { padding: 10px 14px; border-radius: 10px; background: var(--bad-bg); border-left: 3px solid var(--bad); font-size: 14px; }
+.q-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.actions .ok { color: var(--good); font-size: 13.5px; }
+.copybox { width: 100%; min-height: 160px; font-family: var(--mono); font-size: 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); padding: 10px; }
+
+/* Original CV viewer */
+.viewer { position: fixed; inset: 0; z-index: 50; background: rgba(8, 12, 18, .62); display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); }
+.v-panel { width: 100%; max-width: 920px; height: 100%; max-height: 100%; display: grid; grid-template-rows: auto 1fr; background: var(--surface); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, .35); }
+.v-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.v-head b { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.v-body { overflow: auto; background: var(--surface-2); padding: 16px; display: grid; gap: 16px; align-content: start; justify-items: center; }
+.v-page { width: 100%; max-width: 820px; height: auto; background: #fff; border-radius: 4px; box-shadow: 0 1px 3px rgba(0, 0, 0, .18), 0 6px 18px rgba(0, 0, 0, .08); }
+img.v-page { object-fit: contain; }
+.v-doc { width: 100%; max-width: 820px; background: #fff; color: #1a1a1a; padding: 40px 44px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0, 0, 0, .18); line-height: 1.5; overflow-wrap: anywhere; }
+.v-doc pre { white-space: pre-wrap; font-family: var(--sans); margin: 0; }
+.v-doc table { border-collapse: collapse; max-width: 100%; }
+.v-doc td, .v-doc th { border: 1px solid #ddd; padding: 4px 8px; vertical-align: top; }
+.v-doc img { max-width: 100%; }
+.v-note { color: var(--muted); padding: 24px; }
+@media (max-width: 560px) { .v-doc { padding: 22px 18px; } .v-body { padding: 10px; } }
+
+@media (max-width: 920px) {
+  .gauges { grid-template-columns: 1fr; }
+  .gauge { grid-template-columns: 96px 1fr; grid-template-rows: auto; justify-items: start; text-align: left; column-gap: 16px; row-gap: 2px; align-items: center; padding: 14px 16px; }
+  .gauge::before { inset: 0 auto 0 0; width: 3px; height: auto; }
+  .gauge .dial { grid-row: 1 / span 3; width: 96px; }
+  .gauge .val b { font-size: 28px; }
+  .gauge .g-lbl { margin-top: 0; }
+}
+@media (max-width: 820px) {
+  .hero, .grid-2, .q-cols { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .score-card { grid-template-columns: 1fr; justify-items: start; }
+  .brand h1 { font-size: 21px; }
+  .drop { min-height: 260px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation-duration: 0s !important; }
+  li[data-s="doing"] .dot { animation: none; border-top-color: var(--pen); }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" width="44" height="44" viewBox="0 0 40 40" role="img" aria-label="Seera logo">
+        <rect width="40" height="40" rx="11" fill="#2448C9"/>
+        <path d="M32 9.5V19.5a3 3 0 0 1-6 0V13.5M26 19.5a3 3 0 0 1-6 0V16.5M20 19.5c0 6.5-3 9.5-6.5 9.5S8 26.5 8 22.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="3" fill="#FFE45C"/>
+      </svg>
+      <div>
+        <h1>Seera <span class="ar" lang="ar">سيرة</span></h1>
+        <p>Drop a CV. Get its score and the interview questions it will trigger.</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="intake" id="intake" aria-label="Upload a CV">
+    <label class="drop" id="drop" for="file">
+      <input type="file" id="file" accept=".pdf,.docx,.txt,.md,.png,.jpg,.jpeg,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*">
+      <div class="drop-inner">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--pen)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+        <strong>Drop a CV here</strong>
+        <span class="or">or <u>choose a file</u></span>
+        <div class="formats"><span class="fmt">PDF</span><span class="fmt">DOCX</span><span class="fmt">TXT</span><span class="fmt">JPG / PNG</span></div>
+      </div>
+    </label>
+    <div class="role-wrap">
+      <button class="linkbtn" id="roleToggle" type="button" aria-expanded="false" aria-controls="roleBox">Hiring for a specific role?</button>
+      <div class="role-box" id="roleBox" hidden>
+        <label for="role">Job title or job description <span>(optional)</span></label>
+        <textarea id="role" placeholder="e.g. Senior Backend Engineer, or paste the full job ad"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="progress" hidden aria-live="polite">
+    <ul class="steps">
+      <li id="st-read" data-s="todo"><span class="dot"></span><span id="st-read-t">Reading the file</span><span class="meta" id="st-read-m"></span></li>
+      <li id="st-ai" data-s="todo"><span class="dot"></span><span id="st-ai-t">Analyzing the CV</span><span class="meta" id="st-ai-m"></span></li>
+      <li id="st-build" data-s="todo"><span class="dot"></span><span>Building the report</span><span class="meta"></span></li>
+    </ul>
+    <div class="panel-row">
+      <p id="progressHint">Scores appear first. The interview questions follow a few seconds later.</p>
+      <button class="btn" id="stopBtn" type="button">Stop</button>
+    </div>
+  </section>
+
+  <section class="panel msg" id="msg" hidden role="alert">
+    <h3 id="msgTitle"></h3>
+    <p id="msgBody"></p>
+    <div class="actions"><button class="btn primary" id="retryBtn" type="button" hidden>Try again</button></div>
+  </section>
+
+  <main class="report" id="report" hidden></main>
+
+  <div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="viewerName">
+    <div class="v-panel">
+      <div class="v-head"><b id="viewerName">Original CV</b><button class="btn" id="viewerClose" type="button">Close</button></div>
+      <div class="v-body" id="viewerBody"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+(() => {
+"use strict";
+
+// ---------- Helpers ----------
+const $ = (s) => document.querySelector(s);
+function h(tag, props, ...kids) {
+  const el = document.createElement(tag);
+  if (props) for (const k in props) {
+    const v = props[k];
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const kid of kids.flat(Infinity)) {
+    if (kid == null || kid === false || kid === "") continue;
+    el.append(kid instanceof Node ? kid : String(kid));
+  }
+  return el;
+}
+const str = (x) => (x == null ? "" : String(x)).trim();
+const arr = (x) => (Array.isArray(x) ? x : []);
+const clamp = (x) => Math.max(0, Math.min(100, Math.round(Number(x) || 0)));
+
+function band(score) {
+  if (score >= 90) return { label: "Exceptional", cls: "good" };
+  if (score >= 75) return { label: "Strong", cls: "good" };
+  if (score >= 60) return { label: "Solid", cls: "warn" };
+  if (score >= 40) return { label: "Needs work", cls: "warn" };
+  return { label: "Weak", cls: "bad" };
+}
+const barClass = (s) => (s >= 75 ? "good" : s >= 50 ? "warn" : "bad");
+
+const DIMS = [
+  ["impact", "Impact & achievements", .30],
+  ["clarity", "Clarity & structure", .15],
+  ["relevance", "Skills relevance", .25],
+  ["depth", "Experience depth", .20],
+  ["ats", "ATS-friendliness", .10]
+];
+const CATS = {
+  technical: "Technical",
+  behavioral: "Behavioral",
+  cv: "CV deep-dive",
+  redflag: "Red-flag probe"
+};
+
+function normalize(d) {
+  const c = d.candidate || {};
+  const sc = d.scores || {};
+  const scores = DIMS.map(([k, label, w]) => ({
+    key: k, w, label: str(sc[k]?.label) || label, score: clamp(sc[k]?.score), note: str(sc[k]?.note)
+  }));
+  const weighted = Math.round(scores.reduce((a, s) => a + s.score * s.w, 0));
+  const hasOverall = d.overall && d.overall.score != null && d.overall.score !== "";
+  return {
+    candidate: {
+      name: str(c.name), headline: str(c.headline), target_role: str(c.target_role), seniority: str(c.seniority),
+      years: str(c.years_experience), location: str(c.location), skills: arr(c.top_skills).map(str).filter(Boolean).slice(0, 12)
+    },
+    overall: { score: hasOverall ? clamp(d.overall.score) : weighted, verdict: str(d.overall?.verdict), summary: str(d.overall?.summary) },
+    first_impression: str(d.first_impression),
+    scores,
+    strengths: arr(d.strengths).map((x) => ({ point: str(x?.point), evidence: str(x?.evidence) })).filter((x) => x.point),
+    weaknesses: arr(d.weaknesses).map((x) => ({ point: str(x?.point), evidence: str(x?.evidence), fix: str(x?.fix) })).filter((x) => x.point),
+    questions: normalizeQuestions(d.questions)
+  };
+}
+
+function normalizeQuestions(list) {
+  return arr(list).map((q) => ({
+      category: CATS[str(q?.category).toLowerCase()] ? str(q.category).toLowerCase() : "cv",
+      question: str(q?.question), why: str(q?.why), points: arr(q?.strong_points).map(str).filter(Boolean),
+      tone: str(q?.tone), sample: str(q?.sample_answer), weak: str(q?.weak_answer)
+    })).filter((q) => q.question);
+}
+
+// ---------- Rendering ----------
+let current = null;
+let activeFilter = "all";
+
+function ring(score) {
+  const r = 58, C = 2 * Math.PI * r;
+  const cls = band(score).cls;
+  const color = cls === "good" ? "var(--good)" : cls === "warn" ? "var(--warn)" : "var(--bad)";
+  const wrap = h("div", { class: "ring", role: "img", "aria-label": `Overall score ${score} out of 100` });
+  wrap.innerHTML = `<svg viewBox="0 0 148 148"><circle class="track" cx="74" cy="74" r="${r}"/><circle class="val" cx="74" cy="74" r="${r}" stroke="${color}" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg>`;
+  wrap.append(h("div", { class: "num" }, h("div", null, h("b", null, score), h("small", null, "/ 100"))));
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    wrap.querySelector(".val").style.strokeDashoffset = String(C * (1 - score / 100));
+  }));
+  return wrap;
+}
+
+function render(data) {
+  if (!current || current.data !== data) current = { data, qState: "done", qErr: null };
+  const d = data;
+  const root = $("#report");
+  root.replaceChildren();
+  root.hidden = false;
+  $("#intake").hidden = true;
+
+  // Role bar: which role this was scored against, with a quick re-run
+  const roleUsed = d.roleUsed || "";
+  const firstLine = roleUsed.split("\n").map((x) => x.trim()).find(Boolean) || "";
+  const box = h("textarea", { id: "reRole", placeholder: "e.g. Senior Backend Engineer, or paste the full job ad", "aria-label": "Job title or job description" });
+  box.value = roleUsed;
+  const edit = h("div", { class: "rb-edit", hidden: true },
+    box,
+    h("div", { class: "actions" },
+      h("button", { class: "btn", type: "button", onclick: () => { edit.hidden = true; toggle.hidden = false; } }, "Cancel"),
+      h("button", { class: "btn primary", type: "button", onclick: () => reanalyze(box.value) }, "Re-analyze")));
+  const toggle = h("button", { class: "btn", type: "button", onclick: () => { edit.hidden = false; toggle.hidden = true; box.focus(); } },
+    roleUsed ? "Change role" : "Check against a role");
+  root.append(h("section", { class: "rolebar", "aria-label": "Target role" },
+    h("div", { class: "rb-row" },
+      h("div", { class: "rb-text" },
+        h("span", null, roleUsed ? "Scored against" : "Role guessed from the CV"),
+        h("b", { dir: "auto", title: firstLine || c0(d) }, (firstLine.length > 90 ? firstLine.slice(0, 90) + "…" : firstLine) || c0(d) || "Not clear from the CV")),
+      toggle),
+    edit));
+
+  // Hero: score + snapshot
+  const b = band(d.overall.score);
+  const scoreCard = h("section", { class: "card score-card", "aria-label": "Overall score" },
+    ring(d.overall.score),
+    h("div", { class: "verdict" },
+      h("span", { class: `band b-${b.cls}` }, b.label),
+      h("h2", { dir: "auto" }, d.overall.verdict || b.label),
+      h("p", { dir: "auto" }, d.overall.summary)),
+    d.first_impression && h("div", { class: "impression" }, h("span", null, "6-second recruiter scan"), h("p", { dir: "auto" }, d.first_impression))
+  );
+  const c = d.candidate;
+  const rows = [["Target role", c.target_role], ["Seniority", c.seniority], ["Experience", c.years ? `${c.years} years` : ""], ["Location", c.location]]
+    .filter(([, v]) => v);
+  const snap = h("section", { class: "card snapshot", "aria-label": "Candidate snapshot" },
+    h("span", { class: "eyebrow" }, "Candidate"),
+    h("div", { class: "name", dir: "auto" }, c.name || "Name not found"),
+    c.headline && h("div", { class: "headline", dir: "auto" }, c.headline),
+    h("dl", null, rows.map(([k, v]) => [h("dt", null, k), h("dd", { dir: "auto" }, v)])),
+    c.skills.length > 0 && h("div", { class: "skills" }, h("span", { class: "eyebrow" }, "Top skills"),
+      h("div", { class: "chips" }, c.skills.map((s) => h("span", { class: "chip", dir: "auto" }, s))))
+  );
+  root.append(h("div", { class: "hero" }, scoreCard, snap));
+
+  // Score breakdown
+  root.append(h("section", { class: "card", "aria-label": "Score breakdown" },
+    h("div", { class: "bd-head" },
+      h("h2", null, "Score breakdown"),
+      h("div", { class: "legend", "aria-hidden": "true" },
+        h("span", null, h("i", { style: "background:var(--bad)" }), "0–39 weak"),
+        h("span", null, h("i", { style: "background:var(--warn)" }), "40–74 needs work / solid"),
+        h("span", null, h("i", { style: "background:var(--good)" }), "75+ strong"))),
+    h("div", { class: "gauges" }, d.scores.map(gauge))
+  ));
+
+  // Strengths / weaknesses
+  root.append(h("div", { class: "grid-2" },
+    h("section", { class: "card" }, h("h2", null, "Strengths", h("span", { class: "count" }, d.strengths.length)),
+      h("ul", { class: "items good" }, d.strengths.map((s) => h("li", null,
+        h("span", { class: "pt", dir: "auto" }, s.point), s.evidence && h("span", { class: "quote", dir: "auto" }, s.evidence))))),
+    h("section", { class: "card" }, h("h2", null, "Weaknesses", h("span", { class: "count" }, d.weaknesses.length)),
+      h("ul", { class: "items bad" }, d.weaknesses.map((s) => h("li", null,
+        h("span", { class: "pt", dir: "auto" }, s.point),
+        s.evidence && h("span", { class: "quote", dir: "auto" }, s.evidence),
+        s.fix && h("span", { class: "fix", dir: "auto" }, h("b", null, "Fix: "), s.fix)))))
+  ));
+
+  // Questions (may still be loading when the scores arrive)
+  root.append(h("section", { class: "card", id: "questions" }));
+  drawQuestions();
+
+  // Actions
+  const ok = h("span", { class: "ok", "aria-live": "polite" });
+  const copyArea = h("div");
+  root.append(h("div", { class: "actions" },
+    h("button", { class: "btn primary", type: "button", onclick: () => copyReport(ok, copyArea) }, "Copy report as text"),
+    lastFile && h("button", { class: "btn", type: "button", onclick: openViewer }, "View original CV"),
+    h("button", { class: "btn", type: "button", onclick: () => { ctl?.abort(); ctl = null; stopQTimer(); $("#file").value = ""; $("#report").hidden = true; $("#intake").hidden = false; window.scrollTo({ top: 0 }); } }, "Analyze another CV"),
+    ok), copyArea);
+}
+
+let qTimer = null;
+function stopQTimer() { clearInterval(qTimer); qTimer = null; }
+
+function drawQuestions() {
+  const sec = $("#questions");
+  if (!sec || !current) return;
+  const d = current.data;
+  const title = h("h2", null, "Interview questions", d.questions.length > 0 && h("span", { class: "count" }, d.questions.length));
+  if (current.qState === "loading") {
+    const meta = h("span", { class: "meta", id: "qElapsed" });
+    sec.replaceChildren(title, h("div", { class: "q-loading", role: "status" }, h("span", { class: "dot" }), "Writing interview questions and sample answers…", meta));
+    const t0 = current.qStarted || Date.now();
+    stopQTimer();
+    qTimer = setInterval(() => { meta.textContent = `${Math.round((Date.now() - t0) / 1000)}s`; }, 1000);
+    return;
+  }
+  stopQTimer();
+  if (current.qState === "error") {
+    const [, body] = ERRORS[current.qErr] || ERRORS.upstream_error;
+    sec.replaceChildren(title, h("div", { class: "q-error", role: "alert" },
+      h("span", null, current.qErr === "cancelled" ? "Question writing was stopped." : "The interview questions didn't come through. " + body.replace(/ Press Try again\.$/, "")),
+      h("button", { class: "btn primary", type: "button", onclick: retryQuestions }, "Try again")));
+    return;
+  }
+  const counts = { all: d.questions.length };
+  for (const q of d.questions) counts[q.category] = (counts[q.category] || 0) + 1;
+  if (!counts[activeFilter]) activeFilter = "all";
+  const list = h("div", { class: "qs" });
+  const tools = h("div", { class: "q-tools", role: "group", "aria-label": "Filter questions" });
+  const drawList = () => {
+    list.replaceChildren(...d.questions.filter((q) => activeFilter === "all" || q.category === activeFilter).map(questionEl));
+    for (const b of tools.children) b.setAttribute("aria-pressed", String(b.dataset.f === activeFilter));
+  };
+  for (const key of ["all", ...Object.keys(CATS)]) {
+    if (!counts[key]) continue;
+    tools.append(h("button", { class: "filter", type: "button", "data-f": key, onclick: () => { activeFilter = key; drawList(); } },
+      key === "all" ? "All" : CATS[key], h("span", { class: "c" }, counts[key])));
+  }
+  drawList();
+  const first = list.querySelector("details");
+  if (first) first.open = true;
+  sec.replaceChildren(title,
+    h("p", { style: "color:var(--muted);margin:-8px 0 14px;font-size:14px" }, "Open a question to see why it's asked, what a strong answer covers, and how it should sound."),
+    tools, list);
+}
+
+function gauge(s) {
+  // 240° dial with the gap at the bottom; ticks mark the band edges (40, 60, 75, 90).
+  const cx = 60, cy = 60, r = 46, sweep = 240, start = 150;
+  const C = 2 * Math.PI * r, arc = C * sweep / 360;
+  const b = band(s.score);
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 120 120");
+  svg.setAttribute("aria-hidden", "true");
+  const ticks = [40, 60, 75, 90].map((v) => {
+    const a = (start + sweep * v / 100) * Math.PI / 180;
+    const x = (rr) => (cx + rr * Math.cos(a)).toFixed(2), y = (rr) => (cy + rr * Math.sin(a)).toFixed(2);
+    return `<line class="tk" x1="${x(r + 7)}" y1="${y(r + 7)}" x2="${x(r + 12)}" y2="${y(r + 12)}"/>`;
+  }).join("");
+  svg.innerHTML = `<g transform="rotate(${start} ${cx} ${cy})">
+      <circle class="arc-track" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${arc} ${C}"/>
+      <circle class="arc-val" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="0 ${C}"/>
+    </g>${ticks}`;
+  const val = svg.querySelector(".arc-val");
+  if (s.score > 0) requestAnimationFrame(() => requestAnimationFrame(() => {
+    val.setAttribute("stroke-dasharray", `${arc * s.score / 100} ${C}`);
+  }));
+  return h("div", { class: `gauge gc-${b.cls}`, role: "img", "aria-label": `${s.label}: ${s.score} out of 100, ${b.label}` },
+    h("div", { class: "dial" }, svg, h("div", { class: "val" }, h("div", null, h("b", null, s.score), h("small", null, b.label)))),
+    h("div", { class: "g-lbl", dir: "auto" }, s.label),
+    h("div", { class: "g-w" }, `${Math.round(s.w * 100)}% of total`),
+    s.note && h("p", { class: "g-note", dir: "auto" }, s.note));
+}
+
+function questionEl(q) {
+  return h("details", { class: "q" },
+    h("summary", null,
+      h("span", { class: `cat cat-${q.category}` }, CATS[q.category]),
+      h("span", { class: "qt", dir: "auto" }, q.question),
+      h("span", { class: "chev", "aria-hidden": "true" }, "▾")),
+    h("div", { class: "q-body" },
+      h("div", { class: "q-cols" },
+        q.why && h("div", { class: "sub" }, h("span", null, "Why they ask"), h("p", { dir: "auto" }, q.why)),
+        q.tone && h("div", { class: "sub" }, h("span", null, "How it should sound"), h("p", { dir: "auto" }, q.tone))),
+      q.points.length > 0 && h("div", { class: "sub" }, h("span", null, "A strong answer covers"),
+        h("ul", { dir: "auto" }, q.points.map((p) => h("li", null, p)))),
+      q.sample && h("div", { class: "sub" }, h("span", null, "Sample strong answer"), h("blockquote", { class: "sample", dir: "auto" }, q.sample)),
+      q.weak && h("div", { class: "sub" }, h("span", null, "Weak answer to avoid"), h("div", { class: "weak", dir: "auto" }, q.weak))
+    ));
+}
+
+function reportText(d) {
+  const L = [];
+  const c = d.candidate;
+  L.push(`SEERA CV REPORT${c.name ? " — " + c.name : ""}`, "");
+  L.push(`Overall: ${d.overall.score}/100 (${band(d.overall.score).label})${d.overall.verdict ? " — " + d.overall.verdict : ""}`);
+  if (d.overall.summary) L.push(d.overall.summary);
+  if (d.first_impression) L.push("", `6-second scan: ${d.first_impression}`);
+  L.push("", "SCORES");
+  for (const s of d.scores) L.push(`- ${s.label}: ${s.score}${s.note ? " — " + s.note : ""}`);
+  L.push("", "STRENGTHS");
+  for (const s of d.strengths) L.push(`- ${s.point}${s.evidence ? " (" + s.evidence + ")" : ""}`);
+  L.push("", "WEAKNESSES");
+  for (const s of d.weaknesses) L.push(`- ${s.point}${s.evidence ? " (" + s.evidence + ")" : ""}${s.fix ? "\n  Fix: " + s.fix : ""}`);
+  if (d.questions.length) {
+    L.push("", "INTERVIEW QUESTIONS");
+    d.questions.forEach((q, i) => {
+      L.push("", `${i + 1}. [${CATS[q.category]}] ${q.question}`);
+      if (q.why) L.push(`   Why: ${q.why}`);
+      if (q.points.length) L.push(`   Strong answer covers: ${q.points.join("; ")}`);
+      if (q.tone) L.push(`   How it should sound: ${q.tone}`);
+      if (q.sample) L.push(`   Sample answer: ${q.sample}`);
+      if (q.weak) L.push(`   Avoid: ${q.weak}`);
+    });
+  }
+  return L.join("\n");
+}
+
+function copyReport(ok, area) {
+  const text = reportText(current.data);
+  const fallback = () => {
+    const ta = h("textarea", { class: "copybox", readonly: true, "aria-label": "Report text" });
+    ta.value = text;
+    area.replaceChildren(ta);
+    ta.focus(); ta.select();
+    ok.textContent = "Copying isn't allowed here. The text is selected below, so press Ctrl/Cmd+C.";
+  };
+  try {
+    navigator.clipboard.writeText(text).then(() => { ok.textContent = "Copied to clipboard."; area.replaceChildren(); }, fallback);
+  } catch { fallback(); }
+}
+
+// ---------- Original CV viewer ----------
+let lastFile = null;
+let viewToken = 0;
+let imgUrl = null;
+
+async function openViewer() {
+  const f = lastFile;
+  if (!f) return;
+  const token = ++viewToken;
+  const ov = $("#viewer"), body = $("#viewerBody");
+  $("#viewerName").textContent = f.name;
+  body.replaceChildren(h("p", { class: "v-note" }, "Loading…"));
+  ov.hidden = false;
+  document.documentElement.style.overflow = "hidden";
+  $("#viewerClose").focus();
+  const name = f.name.toLowerCase(), type = f.type || "";
+  try {
+    if (type === "application/pdf" || name.endsWith(".pdf")) {
+      const pdf = await window.pdfjsLib.getDocument({ data: new Uint8Array(await f.arrayBuffer()), isEvalSupported: false }).promise;
+      if (token !== viewToken) return;
+      body.replaceChildren();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const target = Math.min(820, Math.max(300, body.clientWidth - 32));
+      for (let i = 1; i <= Math.min(pdf.numPages, 30); i++) {
+        const page = await pdf.getPage(i);
+        const scale = (target / page.getViewport({ scale: 1 }).width) * dpr;
+        const vp = page.getViewport({ scale });
+        const canvas = h("canvas", { class: "v-page", role: "img", "aria-label": `Page ${i} of ${pdf.numPages}` });
+        canvas.width = Math.ceil(vp.width); canvas.height = Math.ceil(vp.height);
+        body.append(canvas);
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+        if (token !== viewToken || ov.hidden) return;
+      }
+      if (pdf.numPages > 30) body.append(h("p", { class: "v-note" }, `Showing the first 30 of ${pdf.numPages} pages.`));
+    } else if (type.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/.test(name)) {
+      if (imgUrl) URL.revokeObjectURL(imgUrl);
+      imgUrl = URL.createObjectURL(f);
+      body.replaceChildren(h("img", { class: "v-page", src: imgUrl, alt: f.name }));
+    } else if (name.endsWith(".docx")) {
+      const r = await window.mammoth.convertToHtml({ arrayBuffer: await f.arrayBuffer() });
+      if (token !== viewToken) return;
+      const doc = h("div", { class: "v-doc", dir: "auto" });
+      doc.innerHTML = r.value;
+      doc.querySelectorAll("script, iframe, object, embed").forEach((n) => n.remove());
+      body.replaceChildren(doc);
+    } else {
+      const text = await f.text();
+      if (token !== viewToken) return;
+      body.replaceChildren(h("div", { class: "v-doc", dir: "auto" }, h("pre", null, text)));
+    }
+  } catch {
+    if (token === viewToken) body.replaceChildren(h("p", { class: "v-note" }, "This file couldn't be displayed, but its analysis above is complete."));
+  }
+}
+
+function closeViewer() {
+  viewToken++;
+  $("#viewer").hidden = true;
+  document.documentElement.style.overflow = "";
+  $("#viewerBody").replaceChildren();
+}
+
+// ---------- File reading ----------
+class UserError extends Error {}
+
+async function extractPdf(file) {
+  const lib = window.pdfjsLib;
+  if (!lib) throw new UserError("The PDF reader didn't load. Check your connection and reload the page.");
+  lib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  let pdf;
+  try {
+    pdf = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false }).promise;
+  } catch (e) {
+    if (e?.name === "PasswordException") throw new UserError("This PDF is password-protected. Remove the password and try again.");
+    throw new UserError("This PDF couldn't be opened. It may be damaged. Try exporting it again.");
+  }
+  const pages = Math.min(pdf.numPages, 10);
+  let text = "";
+  for (let i = 1; i <= pages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map((it) => (it.str || "") + (it.hasEOL ? "\n" : " ")).join("") + "\n\n";
+  }
+  text = text.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+  const info = { kind: "PDF", pages: pdf.numPages, text, images: [] };
+  if (text.length < 150) {
+    // Probably a scanned PDF: render the first pages as images for Claude to read.
+    for (let i = 1; i <= Math.min(pdf.numPages, 3); i++) {
+      const page = await pdf.getPage(i);
+      const vp = page.getViewport({ scale: 1.8 });
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.ceil(vp.width); canvas.height = Math.ceil(vp.height);
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+      const blob = await new Promise((res) => canvas.toBlob(res, "image/png"));
+      if (blob) info.images.push(blob);
+    }
+    info.kind = "scanned PDF";
+  }
+  return info;
+}
+
+async function extract(file) {
+  const name = file.name.toLowerCase();
+  const type = file.type || "";
+  if (file.size > 25 * 1024 * 1024) throw new UserError("This file is over 25 MB. A CV should be much smaller, so check it's the right file.");
+  if (type.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/.test(name)) return { kind: "image", text: "", images: [file] };
+  if (type === "application/pdf" || name.endsWith(".pdf")) return extractPdf(file);
+  if (name.endsWith(".docx")) {
+    if (!window.mammoth) throw new UserError("The Word reader didn't load. Check your connection and reload the page.");
+    try {
+      const r = await window.mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+      return { kind: "DOCX", text: r.value.replace(/\n{3,}/g, "\n\n").trim(), images: [] };
+    } catch { throw new UserError("This Word file couldn't be read. Save it again as .docx or PDF and retry."); }
+  }
+  if (name.endsWith(".doc")) throw new UserError("Old .doc files can't be read in the browser. Save the CV as .docx or PDF and drop it again.");
+  if (type.startsWith("text/") || /\.(txt|md|text)$/.test(name)) return { kind: "text", text: (await file.text()).trim(), images: [] };
+  throw new UserError(`"${file.name}" isn't a supported format. Use PDF, DOCX, TXT, JPG or PNG.`);
+}
+
+// ---------- Claude ----------
+let sample = null;
+let sampleReady = false;
+let ctl = null;
+let lastJob = null;
+let timer = null;
+
+const SCHEMA_SCORES = `{
+  "is_cv": true,
+  "candidate": {"name": "", "headline": "one-line professional headline", "target_role": "", "seniority": "Junior | Mid | Senior | Lead | Executive", "years_experience": 0, "location": "", "top_skills": ["up to 8"]},
+  "overall": {"score": 0, "verdict": "2-4 word verdict", "summary": "2-3 sentences"},
+  "first_impression": "what a recruiter notices in a 6-second skim, 1-2 sentences",
+  "scores": {
+    "impact": {"label": "Impact & achievements", "score": 0, "note": "one sentence citing the CV"},
+    "clarity": {"label": "Clarity & structure", "score": 0, "note": ""},
+    "relevance": {"label": "Skills relevance", "score": 0, "note": ""},
+    "depth": {"label": "Experience depth", "score": 0, "note": ""},
+    "ats": {"label": "ATS-friendliness", "score": 0, "note": ""}
+  },
+  "strengths": [{"point": "", "evidence": "short quote from the CV"}],
+  "weaknesses": [{"point": "", "evidence": "short quote from the CV, or what is missing", "fix": "concrete fix"}]
+}`;
+
+const SCHEMA_QUESTIONS = `{
+  "questions": [{"category": "technical | behavioral | cv | redflag", "question": "", "why": "why an interviewer asks this", "strong_points": ["3-5 points a strong answer covers"], "tone": "how the answer should sound", "sample_answer": "", "weak_answer": "what a weak answer sounds like and why it hurts"}]
+}`;
+
+// The analysis runs as two parallel requests (scores + questions) so each writes half as much.
+function promptParts(job) {
+  return {
+    role: job.role
+      ? `The CV is being evaluated against this target role / job description:\n"""\n${job.role}\n"""`
+      : `No target role was given. Infer the most likely target role from the CV and judge against it.`,
+    language: `LANGUAGE: write every string value in the language the CV is mostly written in (an Arabic CV gets Arabic values, an English CV gets English values). Keep all JSON keys and the "category" values in English exactly as specified.`,
+    source: job.text
+      ? `CV TEXT (extracted from a ${job.kind} file, so layout may be lost; do not penalise extraction artifacts such as odd line breaks):\n"""\n${job.text}\n"""`
+      : `The CV is attached as ${job.images.length} image(s) of its pages. Read it from the images.`
+  };
+}
+
+function buildScorePrompt(job) {
+  const p = promptParts(job);
+  return `You are a senior recruiter and hiring manager with 15 years of experience screening CVs across industries. Analyse the CV below rigorously and honestly, like a demanding but fair hiring panel. Do not flatter. Base every claim on the CV itself and quote short fragments as evidence. Never invent employers, degrees or facts about the candidate.
+
+${p.role}
+
+${p.language}
+
+SCORING: score each dimension 0-100 and be calibrated: 90+ exceptional (top 5%), 75-89 strong, 60-74 solid with clear gaps, 40-59 needs work, below 40 weak. Most real CVs land between 50 and 75.
+- impact: measurable achievements, numbers and outcomes rather than duties
+- clarity: structure, readability, concision, consistency
+- relevance: fit of skills and experience for the target role
+- depth: seniority, progression, scope and complexity of the work
+- ats: how well applicant tracking systems can parse it (standard headings, role keywords, contact details present, no content trapped in graphics or tables)
+overall.score = impact*0.30 + relevance*0.25 + depth*0.20 + clarity*0.15 + ats*0.10, rounded.
+
+CONTENT: 3-5 strengths and 3-5 weaknesses (each weakness with a concrete fix).
+
+If the document is clearly not a CV or resume, reply with only {"is_cv": false, "reason": "one sentence"}.
+
+Otherwise reply with ONLY one JSON object in exactly this shape, with no text before or after it:
+${SCHEMA_SCORES}
+
+${p.source}`;
+}
+
+function buildQuestionsPrompt(job) {
+  const p = promptParts(job);
+  return `You are a senior hiring manager preparing to interview the candidate whose CV is below. Be rigorous and specific. Never invent employers, degrees or facts about the candidate.
+
+${p.role}
+
+${p.language}
+
+INTERVIEW QUESTIONS: write 10 questions a real interviewer would ask THIS candidate for the target role, each anchored in something specific on the CV (a project, a number, a tool, a job change, a gap, a vague claim). Use "technical" for 3-4, "behavioral" for 3, "cv" (deep-dive into a specific CV claim) for 2, and "redflag" (probing gaps, short tenures, vague or inflated claims) for 1-2. For each: why the interviewer asks it; 3-5 points a strong answer covers; how the answer should sound (tone and structure, e.g. STAR, specific, confident, owns mistakes); a sample strong answer of 60-110 words in the first person, as the candidate, using details from the CV (where the CV lacks a figure, use a clearly marked placeholder like [X%] instead of inventing one); and what a weak answer sounds like.
+
+If the document is clearly not a CV or resume, reply with only {"questions": []}.
+
+Otherwise reply with ONLY one JSON object in exactly this shape, with no text before or after it:
+${SCHEMA_QUESTIONS}
+
+${p.source}`;
+}
+
+const withImages = (job, opts) => (job.images.length ? { ...opts, images: job.images } : opts);
+
+async function handleQuestions(promise, myCtl) {
+  let raw, err = null;
+  try { raw = await promise; } catch (e) { err = e?.code || "upstream_error"; }
+  if (myCtl !== ctl || !current) return;
+  const qs = err ? [] : normalizeQuestions(raw?.questions);
+  if (!err && !qs.length) err = "invalid_json";
+  current.data.questions = qs;
+  current.qState = err ? "error" : "done";
+  current.qErr = err;
+  drawQuestions();
+}
+
+function retryQuestions() {
+  const job = lastJob;
+  if (!job || !sample || !current) return;
+  ctl = new AbortController();
+  const myCtl = ctl;
+  current.qState = "loading";
+  current.qStarted = Date.now();
+  drawQuestions();
+  handleQuestions(sample.json(buildQuestionsPrompt(job), withImages(job, { signal: myCtl.signal, modelTier: "default" })), myCtl);
+}
+
+const ERRORS = {
+  not_granted: ["Permission needed", "The analysis needs your permission to run. Reload the page, drop the CV again, and choose Allow."],
+  sampling_disabled: ["Analysis unavailable", "The analysis engine isn't available. Make sure Claude Code is installed and signed in on this computer."],
+  not_declared: ["Analysis unavailable", "The analysis can't run right now. Reload the page and try again."],
+  capability_disabled: ["Analysis unavailable", "The analysis can't run in this view. Open the page in your web browser."],
+  capability_removed: ["Update needed", "This app version is too old for the tool. Open it in your web browser instead."],
+  rate_limited: ["Usage limit reached", "You've reached your usage limit for now. Wait a while, then press Try again."],
+  session_expired: ["Signed out", "Your session has ended. Sign in again, then press Try again."],
+  prompt_too_large: ["This CV is too long", "The text is too long to send in one go. Try a shorter version of the CV (a few pages)."],
+  images_unavailable: ["No readable text in this file", "This file is a scan or an image, which can't be analyzed here. Use a text-based PDF or a DOCX."],
+  image_rejected: ["The image couldn't be used", "This image couldn't be read. Try a clearer JPG or PNG, or a text-based PDF."],
+  refused: ["File declined", "This document couldn't be analyzed. Check that it's a CV and try a different file."],
+  invalid_json: ["The report came back incomplete", "The result couldn't be turned into a report. Press Try again."],
+  empty_completion: ["The report came back empty", "No result came back. Press Try again."],
+  upstream_error: ["Connection problem", "The analysis was interrupted. Press Try again."]
+};
+const RETRYABLE = new Set(["rate_limited", "session_expired", "invalid_json", "empty_completion", "upstream_error"]);
+
+// ---------- UI state ----------
+function setStep(id, state, meta) {
+  const li = $("#" + id);
+  li.dataset.s = state;
+  if (meta != null) { const m = $("#" + id + "-m"); if (m) m.textContent = meta; }
+}
+function showProgress() {
+  $("#msg").hidden = true;
+  $("#progress").hidden = false;
+  for (const id of ["st-read", "st-ai", "st-build"]) setStep(id, "todo", "");
+  $("#stopBtn").hidden = false;
+  $("#progress").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+function stopTimer() { clearInterval(timer); timer = null; }
+function showMessage(title, body, { retry = false, info = false } = {}) {
+  stopTimer();
+  $("#progress").hidden = true;
+  $("#intake").hidden = false;
+  const m = $("#msg");
+  m.classList.toggle("info", info);
+  $("#msgTitle").textContent = title;
+  $("#msgBody").textContent = body;
+  $("#retryBtn").hidden = !retry;
+  m.hidden = false;
+  m.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+async function handleFile(file) {
+  if (!file) return;
+  ctl?.abort();
+  ctl = null;
+  lastFile = file;
+  $("#intake").hidden = true;
+  $("#report").hidden = true;
+  showProgress();
+  $("#st-read-t").textContent = `Reading ${file.name}`;
+  setStep("st-read", "doing");
+  let info;
+  try {
+    info = await extract(file);
+  } catch (e) {
+    showMessage("Couldn't read this file", e instanceof UserError ? e.message : "Something went wrong while reading the file. Try saving it again as PDF or DOCX.");
+    return;
+  }
+  const words = info.text ? info.text.split(/\s+/).filter(Boolean).length : 0;
+  if (!info.text && !info.images.length) {
+    showMessage("No text found", "This file doesn't contain any readable text. Make sure it's the CV itself and not an empty page.");
+    return;
+  }
+  setStep("st-read", "done", info.text && info.text.length >= 150 ? `${words.toLocaleString()} words` : `${info.images.length} page image${info.images.length === 1 ? "" : "s"}`);
+
+  lastJob = {
+    kind: info.kind,
+    role: $("#role").value.trim().slice(0, 6000),
+    text: info.text && info.text.length >= 150 ? info.text.slice(0, 40000) : "",
+    images: info.text && info.text.length >= 150 ? [] : info.images
+  };
+  runAnalysis();
+}
+
+function c0(d) { return d.candidate?.target_role || ""; }
+
+function reanalyze(role) {
+  if (!lastJob) return;
+  const r = String(role || "").trim().slice(0, 6000);
+  $("#role").value = r;
+  $("#roleBox").hidden = !r;
+  $("#roleToggle").setAttribute("aria-expanded", String(!!r));
+  lastJob = { ...lastJob, role: r };
+  runAnalysis();
+}
+
+async function runAnalysis() {
+  const job = lastJob;
+  if (!job) return;
+  ctl?.abort();
+  ctl = null;
+  stopQTimer();
+  $("#intake").hidden = true;
+  $("#report").hidden = true;
+  if (!sampleReady) {
+    // Wait briefly for the Claude runtime if the file was dropped very early.
+    $("#st-ai-t").textContent = "Analyzing the CV";
+    setStep("st-ai", "doing");
+    await sampleLoaded;
+  }
+  if (!sample) {
+    showMessage("Analysis unavailable here", "The CV was read, but the analysis only runs when the tool is opened from its link while you're signed in. Open the link, then drop the CV again.", { info: true });
+    return;
+  }
+  if (job.images.length) {
+    const caps = await sample.limits().catch(() => null);
+    if (!caps?.images) { showMessage(...ERRORS.images_unavailable); return; }
+    job.images = job.images.slice(0, caps.images.maxCount || 1);
+  }
+
+  $("#msg").hidden = true;
+  $("#progress").hidden = false;
+  $("#stopBtn").hidden = false;
+  setStep("st-read", "done");
+  $("#st-ai-t").textContent = "Analyzing the CV";
+  setStep("st-ai", "doing", "0s");
+  setStep("st-build", "todo");
+  $("#progressHint").textContent = "Scores appear first. The interview questions follow a few seconds later.";
+  const started = Date.now();
+  let chars = 0;
+  stopTimer();
+  timer = setInterval(() => {
+    const s = Math.round((Date.now() - started) / 1000);
+    setStep("st-ai", "doing", chars ? `${s}s · ${chars.toLocaleString()} chars` : `${s}s`);
+  }, 1000);
+
+  ctl = new AbortController();
+  const myCtl = ctl;
+  // Start the questions request at the same time; its result is attached once the scores are shown.
+  const qStarted = Date.now();
+  const qPromise = sample.json(buildQuestionsPrompt(job), withImages(job, { signal: myCtl.signal, modelTier: "default" }));
+  qPromise.catch(() => {});
+  try {
+    const raw = await sample.json(buildScorePrompt(job), withImages(job, {
+      signal: myCtl.signal,
+      modelTier: "default",
+      onText: ({ text }) => {
+        chars = text.length;
+        $("#st-ai-t").textContent = "Writing the scores";
+      }
+    }));
+    if (myCtl !== ctl) return;
+    stopTimer();
+    setStep("st-ai", "done", `${Math.round((Date.now() - started) / 1000)}s`);
+    setStep("st-build", "doing");
+    if (!raw || typeof raw !== "object") throw { code: "invalid_json" };
+    if (raw.is_cv === false) {
+      myCtl.abort();
+      ctl = null;
+      showMessage("This doesn't look like a CV", (raw.reason ? String(raw.reason) + " " : "") + "Drop a CV or resume file to analyze it.", { info: true });
+      return;
+    }
+    const data = normalize(raw);
+    data.questions = [];
+    data.roleUsed = job.role || "";
+    if (!data.scores.some((s) => s.score > 0)) throw { code: "invalid_json" };
+    current = { data, qState: "loading", qStarted, qErr: null };
+    render(data);
+    setStep("st-build", "done");
+    $("#progress").hidden = true;
+    $("#report").scrollIntoView({ behavior: "smooth", block: "start" });
+    handleQuestions(qPromise, myCtl);
+  } catch (e) {
+    if (myCtl !== ctl) return;
+    const code = e?.code || "upstream_error";
+    myCtl.abort();
+    ctl = null;
+    if (code === "cancelled") {
+      showMessage("Analysis stopped", "Nothing was changed. Press Try again to analyze the same CV, or drop a different file.", { retry: true, info: true });
+      return;
+    }
+    const [title, body] = ERRORS[code] || ERRORS.upstream_error;
+    showMessage(title, body, { retry: RETRYABLE.has(code) || !ERRORS[code] });
+  }
+}
+
+// ---------- Wiring ----------
+
+// Local mode: served by server.py on localhost, the analysis runs through the local Claude Code CLI.
+const IS_LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && location.protocol === "http:";
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(",")[1] || "");
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
+function makeLocalSample() {
+  const json = async (prompt, opts = {}) => {
+    const images = [];
+    for (const b of Array.from(opts.images ? (opts.images instanceof Blob ? [opts.images] : opts.images) : [])) {
+      images.push({ type: b.type || "image/png", data: await blobToBase64(b) });
+    }
+    let res;
+    try {
+      res = await fetch("/api/sample", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, images }),
+        signal: opts.signal
+      });
+    } catch (e) {
+      throw { code: e?.name === "AbortError" ? "cancelled" : "upstream_error" };
+    }
+    const out = await res.json().catch(() => ({ error: "upstream_error" }));
+    if (out.error) throw { code: out.error === "not_installed" ? "sampling_disabled" : out.error };
+    return out.data;
+  };
+  const fn = async (prompt, opts) => ({ text: JSON.stringify(await json(prompt, opts)), truncated: false });
+  fn.json = json;
+  fn.limits = async () => ({ maxPromptBytes: 200000, images: { maxCount: 3, maxInputBytes: 20000000, mediaTypes: ["image/png", "image/jpeg", "image/webp", "image/gif"] } });
+  return fn;
+}
+
+const sampleLoaded = (async () => {
+  try {
+    sample = IS_LOCAL ? makeLocalSample() : window.claude?.use ? await window.claude.use("sample") : null;
+  } catch { sample = null; }
+  sampleReady = true;
+})();
+
+$("#file").addEventListener("change", (e) => handleFile(e.target.files[0]));
+$("#roleToggle").addEventListener("click", () => {
+  const box = $("#roleBox");
+  box.hidden = !box.hidden;
+  $("#roleToggle").setAttribute("aria-expanded", String(!box.hidden));
+  if (!box.hidden) $("#role").focus();
+});
+$("#viewerClose").addEventListener("click", closeViewer);
+$("#viewer").addEventListener("click", (e) => { if (e.target.id === "viewer") closeViewer(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#viewer").hidden) closeViewer(); });
+$("#stopBtn").addEventListener("click", () => ctl?.abort());
+$("#retryBtn").addEventListener("click", () => runAnalysis());
+
+const drop = $("#drop");
+let depth = 0;
+window.addEventListener("dragenter", (e) => { if (e.dataTransfer?.types?.includes("Files")) { depth++; drop.classList.add("over"); } });
+window.addEventListener("dragleave", () => { depth = Math.max(0, depth - 1); if (!depth) drop.classList.remove("over"); });
+window.addEventListener("dragover", (e) => e.preventDefault());
+window.addEventListener("drop", (e) => {
+  e.preventDefault();
+  depth = 0; drop.classList.remove("over");
+  const f = e.dataTransfer?.files?.[0];
+  if (f) handleFile(f);
+});
+
+})();
+</script>
