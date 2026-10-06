@@ -6,6 +6,8 @@ Run on Linux/macOS:  python3 air_draw_fingers.py
 Gestures: index finger up = draw, peace sign = move, closed fist = erase. Keys: 1-4 color, c clear, s save, q quit.
 """
 
+import sys
+
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -59,9 +61,11 @@ def main():
         min_detection_confidence=0.7,
         min_tracking_confidence=0.5,
     )
-    cap = cv2.VideoCapture(0)
+    cap = (cv2.VideoCapture(0, cv2.CAP_AVFOUNDATION) if sys.platform == "darwin"
+           else cv2.VideoCapture(0))
     if not cap.isOpened():
-        raise SystemExit("Could not open the webcam.")
+        raise SystemExit("Could not open the webcam. On macOS, allow camera access for "
+                         "your terminal in System Settings > Privacy & Security > Camera.")
 
     canvas = None
     prev = None

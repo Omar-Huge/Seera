@@ -91,7 +91,7 @@ def run(monkeypatch, tmp_path, script, keys, frames=None):
     cap = FakeCap(frames or len(script))
     shown = []
     keys = list(keys)
-    monkeypatch.setattr(ad.cv2, "VideoCapture", lambda i: cap)
+    monkeypatch.setattr(ad.cv2, "VideoCapture", lambda *a: cap)
     monkeypatch.setattr(ad.cv2, "imshow", lambda n, img: shown.append(img.copy()))
     def wait(d):
         k = keys.pop(0) if keys else ""
@@ -150,7 +150,7 @@ def test_no_hand_does_not_crash(monkeypatch, tmp_path):
     assert len(shown) == 3 and cap.released
 
 def test_camera_failure_exits(monkeypatch):
-    monkeypatch.setattr(ad.cv2, "VideoCapture", lambda i: FakeCap(0, ok=False))
+    monkeypatch.setattr(ad.cv2, "VideoCapture", lambda *a: FakeCap(0, ok=False))
     monkeypatch.setattr(ad.mp_hands, "Hands", lambda **k: FakeHands([None]))
     with pytest.raises(SystemExit):
         ad.main()
