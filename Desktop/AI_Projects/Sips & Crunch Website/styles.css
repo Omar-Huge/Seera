@@ -1,0 +1,432 @@
+/* ===========================================================
+   SIP & CRUNCH
+   Warm cream + charcoal + paprika (matches the printed menu).
+   Dark is used only where it earns its place: the marquee band,
+   the cart and the footer.
+
+   THEMING
+   Every colour is a token. Light is the default — the palette
+   below is the original one, unchanged. `html[data-theme="dark"]`
+   swaps the same token names, so nothing downstream has to care.
+   Blocks that are deliberately dark in BOTH themes read from the
+   --ink / --on-ink pair rather than from --text / --bg, otherwise
+   they would invert along with the page and lose their contrast.
+   =========================================================== */
+:root{
+  color-scheme:light;
+
+  --bg:#EBE7DD;         /* page */
+  --surface:#F3F0E8;    /* cards */
+  --surface-2:#E0DBCD;  /* deeper panels */
+  --text:#2A2A26;       /* ink */
+  --muted:#57564E;
+  --line:#D5CFBF;
+
+  --sauce:#E2552E;      /* cheddar drizzle / accent */
+  --sauce-hover:#C9431F;
+  --olive:#3A3D24;
+
+  /* always-dark blocks */
+  --ink:#2A2A26;
+  --on-ink:#EBE7DD;
+  --on-ink-soft:rgba(235,231,221,.72);
+  --on-ink-faint:rgba(235,231,221,.52);
+  --on-ink-line:rgba(235,231,221,.24);
+
+  --nav-solid:rgba(235,231,221,.95);
+
+  --display:'Anton',Impact,'Haettenschweiler',sans-serif;
+  --display-latin:'Anton',Impact,'Haettenschweiler',sans-serif;
+  --body:'Inter',system-ui,-apple-system,sans-serif;
+  --label:'Inter',system-ui,-apple-system,sans-serif;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --shadow:0 18px 40px -22px rgba(42,42,38,.45);
+  --maxw:1180px;
+  --nav-h:74px;
+}
+
+html[data-theme="dark"]{
+  color-scheme:dark;
+
+  --bg:#141310;
+  --surface:#1D1B17;
+  --surface-2:#0E0D0B;
+  --text:#EFEBE1;
+  --muted:#A39D90;
+  --line:#302D27;
+
+  --sauce:#F26B41;      /* lifted so it still passes on a dark ground */
+  --sauce-hover:#FF8058;
+
+  --ink:#211F1A;        /* a shade lighter than the page, so it still separates */
+  --on-ink:#EFEBE1;
+  --on-ink-soft:rgba(239,235,225,.72);
+  --on-ink-faint:rgba(239,235,225,.5);
+  --on-ink-line:rgba(239,235,225,.16);
+
+  --nav-solid:rgba(20,19,16,.92);
+
+  --shadow:0 18px 40px -22px rgba(0,0,0,.85);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);background:var(--bg);color:var(--text);
+  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  transition:background-color .3s var(--ease),color .3s var(--ease);
+}
+img,svg,picture{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.01em;line-height:.95;text-transform:uppercase}
+
+:focus-visible{outline:3px solid var(--sauce);outline-offset:3px;border-radius:4px}
+
+.eyebrow{
+  font-family:var(--label);font-weight:600;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--sauce);margin-bottom:14px;
+}
+.lead{color:var(--muted);margin-top:14px;font-size:1.02rem;max-width:52ch}
+
+.section{max-width:var(--maxw);margin:0 auto;padding:clamp(70px,11vw,150px) 22px}
+.section__head{margin-bottom:clamp(34px,5vw,60px);max-width:640px}
+.section__head h2{font-size:clamp(2.4rem,8vw,4.6rem)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--label);font-weight:600;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:1.05em 1.9em;border-radius:2px;border:1px solid var(--text);
+  background:transparent;color:var(--text);cursor:pointer;position:relative;overflow:hidden;
+  transition:color .3s var(--ease),border-color .3s var(--ease),background-color .3s var(--ease);
+}
+.btn::after{ /* drizzle motif sweeps through on hover */
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--sauce);
+  transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);
+}
+.btn:hover::after{transform:scaleX(1)}
+.btn--sauce{background:var(--sauce);border-color:var(--sauce);color:#fff;font-weight:600}
+.btn--sauce:hover{background:var(--sauce-hover);border-color:var(--sauce-hover)}
+.btn--ghost:hover{border-color:var(--sauce);color:var(--sauce)}
+.btn--sm{padding:.75em 1.3em;font-size:.7rem}
+.btn--block{display:flex;width:100%}
+
+/* ---------- nav ---------- */
+/* The hero is the page colour now, so the bar no longer has to flip between a
+   light set of marks and a dark one — the marks are always page ink. .is-solid
+   (toggled by ScrollTrigger) only adds the backdrop, the border and the shrink. */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:80;height:var(--nav-h);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(16px,4vw,40px);
+  background:transparent;
+  border-bottom:1px solid transparent;
+  transition:height .35s var(--ease),background-color .35s var(--ease),border-color .35s var(--ease);
+}
+.nav.is-solid{
+  height:58px;background:var(--nav-solid);backdrop-filter:blur(14px);
+  border-bottom-color:var(--line);
+}
+.nav.is-solid .nav__logo{width:32px;height:32px;transition:width .35s var(--ease),height .35s var(--ease)}
+.nav.is-solid .nav__name{font-size:1rem;transition:font-size .35s var(--ease)}
+.nav__brand{display:flex;align-items:center;gap:11px}
+.nav__right{display:flex;align-items:center;gap:clamp(12px,2.2vw,22px)}
+.nav__logo{
+  display:grid;place-items:center;width:38px;height:38px;flex:none;
+  background:var(--text);color:var(--bg);
+  font-family:var(--display-latin);font-size:.85rem;
+  transition:background-color .35s var(--ease),color .35s var(--ease);
+}
+.nav__name{font-family:var(--display-latin);font-size:1.1rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text);transition:color .35s var(--ease)}
+.nav__links{display:flex;align-items:center;gap:26px}
+.nav__links a{font-family:var(--label);font-weight:600;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:color .25s}
+.nav__links a:hover{color:var(--text)}
+.nav__links .btn{color:#fff}
+.nav__toggle{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+.nav__toggle span{width:24px;height:2px;background:var(--text);transition:.3s var(--ease)}
+
+/* ---------- language + theme switches ----------
+   Deliberately outside .nav__links: on mobile that list collapses into a
+   dropdown, and these two need to stay one tap away at all times. */
+.nav__tools{display:flex;align-items:center;gap:8px;flex:none}
+.iconbtn{
+  display:grid;place-items:center;width:36px;height:36px;flex:none;
+  border:1px solid var(--line);border-radius:2px;background:transparent;
+  color:var(--muted);cursor:pointer;padding:0;
+  font-family:var(--label);font-weight:600;font-size:.74rem;letter-spacing:.04em;line-height:1;
+  transition:color .25s var(--ease),border-color .25s var(--ease),background-color .25s var(--ease);
+}
+.iconbtn:hover{border-color:var(--sauce);color:var(--sauce)}
+.iconbtn--lang{font-size:.8rem}
+[dir="rtl"] .iconbtn--lang{font-family:var(--label);font-size:.72rem}
+.ico{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ico--moon{fill:currentColor;stroke:none}
+/* light theme → offer the moon; dark theme → offer the sun */
+.ico--sun{display:none}
+html[data-theme="dark"] .ico--moon{display:none}
+html[data-theme="dark"] .ico--sun{display:block}
+
+/* ---------- hero ----------
+   The photograph is gone and the hero now sits on the page colour, so it
+   reads as one continuous cream field from the top of the site down to the
+   marquee. That also hands the marquee back its job as the contrast band.
+   Everything here is themed — cream in light, ink in dark. */
+.hero{
+  position:relative;min-height:100svh;display:grid;place-items:center;
+  padding:calc(var(--nav-h) + 40px) 22px 90px;text-align:center;overflow:hidden;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse 90% 62% at 50% 38%,rgba(226,85,46,.10),transparent 68%),
+    var(--bg);
+}
+.hero__drizzle{
+  position:absolute;top:50%;left:50%;translate:-50% -50%;z-index:1;
+  width:min(120vh,900px);height:auto;opacity:.38;pointer-events:none;
+}
+/* no glow here on purpose — a drop-shadow reads as haze on a light ground */
+.hero__path{
+  fill:none;stroke:var(--sauce);stroke-width:26;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.hero__inner{position:relative;z-index:2;max-width:820px}
+.hero__title{
+  font-family:var(--display-latin);direction:ltr;
+  font-size:clamp(3.6rem,15vw,10rem);line-height:.82;letter-spacing:-.01em;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.06em;
+}
+.hero__title .amp{color:var(--sauce);font-size:.55em;transform:translateY(-.08em)}
+.hero__sub{margin:24px auto 32px;max-width:46ch;color:var(--muted);font-size:1.05rem}
+.hero__cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- marquee (dark band for contrast) ---------- */
+.marquee{
+  background:var(--ink);color:var(--on-ink);
+  border-block:1px solid var(--ink);
+  padding:16px 0;overflow:hidden;white-space:nowrap;
+}
+.marquee__track{
+  display:inline-flex;gap:30px;align-items:center;direction:ltr;
+  font-family:var(--display);font-size:1.35rem;letter-spacing:.1em;text-transform:uppercase;
+  will-change:transform;
+}
+.marquee__track b{color:var(--sauce);font-size:.7em}
+
+/* ---------- menu ---------- */
+.menu__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.menu-card{background:var(--surface);padding:30px 26px;will-change:transform,opacity}
+.menu-card__head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.menu-card__emoji{font-size:1.4rem}
+.menu-card h3{font-size:1.35rem}
+.menu-card__note{color:var(--muted);font-size:.8rem;margin:-12px 0 18px}
+.menu-card__item{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)}
+.menu-card__item:first-of-type{border-top:0}
+.menu-card__name{font-size:.95rem}
+.menu-card__price{font-family:var(--label);font-weight:600;font-size:.85rem;letter-spacing:.02em;color:var(--sauce);white-space:nowrap;unicode-bidi:isolate}
+.menu__hint{color:var(--muted);font-size:.82rem;margin-top:22px}
+
+/* ---------- builder ---------- */
+.builder{background:var(--surface-2);max-width:none}
+.builder>*{max-width:var(--maxw);margin-inline:auto}
+.builder__layout{display:grid;grid-template-columns:1.55fr .95fr;gap:30px;align-items:start;max-width:var(--maxw);margin-inline:auto}
+.builder__steps{display:flex;flex-direction:column;gap:18px}
+.bstep{background:var(--surface);border:1px solid var(--line);padding:22px}
+.bstep__title{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.1rem;letter-spacing:.03em;text-transform:uppercase}
+.bstep__sub{color:var(--muted);font-size:.8rem;margin:4px 0 16px}
+.bstep__opts{display:flex;flex-wrap:wrap;gap:9px}
+.opt{
+  position:relative;                 /* BUGFIX: contains the visually-hidden input */
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;user-select:none;
+  border:1px solid var(--line);background:var(--bg);padding:11px 14px;
+  font-size:.9rem;transition:border-color .2s,background-color .2s,color .2s;
+}
+.opt:hover{border-color:var(--sauce)}
+.opt input{position:absolute;opacity:0;pointer-events:none;inset:0}
+.opt .opt__price{font-family:var(--label);font-weight:600;font-size:.76rem;color:var(--sauce);unicode-bidi:isolate}
+.opt.is-on{background:var(--sauce);border-color:var(--sauce);color:#fff}
+.opt.is-on .opt__price{color:#fff}
+
+/* tick-box options (free toppings) — a real box, so "not chosen" is visible
+   rather than merely absent. The qty and radio options read as chips, which
+   look identical whether off or simply unpicked. */
+.opt--check .opt__box{
+  width:16px;height:16px;flex:0 0 16px;border:1.5px solid currentColor;
+  border-radius:3px;display:inline-flex;align-items:center;justify-content:center;
+  transition:background-color .2s;
+}
+.opt--check.is-on .opt__box{background:#fff}
+.opt--check.is-on .opt__box::after{
+  content:"";width:9px;height:5px;margin-top:-2px;
+  border-left:2px solid var(--sauce);border-bottom:2px solid var(--sauce);
+  transform:rotate(-45deg);
+}
+
+/* the one step that cannot be skipped */
+.bstep--required{border-color:var(--sauce)}
+.qty{display:inline-flex;align-items:center;gap:11px;direction:ltr}
+.qty button{width:25px;height:25px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;line-height:1;font-size:.9rem}
+.qty span{min-width:12px;text-align:center;font-family:var(--label);font-weight:600;font-size:.85rem}
+
+/* dark cart — the one high-contrast block on the page */
+.builder__cart{
+  position:sticky;top:calc(var(--nav-h) + 16px);
+  background:var(--ink);color:var(--on-ink);padding:26px;box-shadow:var(--shadow);
+}
+.builder__cart h3{font-size:1.2rem;margin-bottom:16px}
+.cart__list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:18px;min-height:58px;font-size:.9rem}
+.cart__list li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--on-ink-line);padding-bottom:9px}
+.cart__list li span:last-child{unicode-bidi:isolate;white-space:nowrap}
+.cart__empty{color:var(--on-ink-faint);border:0!important}
+.cart__total{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-top:1px solid var(--on-ink-line);margin-bottom:16px}
+.cart__total strong{font-family:var(--display);font-size:1.7rem;color:var(--sauce);unicode-bidi:isolate}
+.cart__fine{font-size:.72rem;color:var(--on-ink-faint);text-align:center;margin-top:10px}
+
+/* ---------- story / order / footer ---------- */
+.story{text-align:center}
+.story__inner{max-width:640px;margin-inline:auto}
+.story__inner h2{font-size:clamp(2.2rem,7vw,4rem);margin-bottom:18px}
+.story__inner p{color:var(--muted);margin-bottom:22px}
+
+.order__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.order__card{background:var(--surface);padding:34px 28px;transition:background-color .3s}
+.order__card:hover{background:var(--bg)}
+.order__icon{font-size:1.9rem;display:block;margin-bottom:14px}
+.order__card h3{font-size:1.3rem;margin-bottom:8px}
+.order__card p{color:var(--muted);font-size:.92rem;margin-bottom:16px}
+.order__link{font-family:var(--label);font-weight:600;font-size:.76rem;letter-spacing:.06em;color:var(--sauce)}
+
+.footer{
+  background:var(--ink);color:var(--on-ink);
+  padding:64px 22px 44px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.footer .nav__logo{background:var(--sauce);color:#fff}
+.footer__name{font-family:var(--display-latin);font-size:1.4rem;text-transform:uppercase;letter-spacing:.04em}
+.footer__tag{color:var(--on-ink-soft);font-size:.85rem}
+.footer__links{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.footer__links a{font-family:var(--label);font-weight:600;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--on-ink-soft)}
+.footer__links a:hover{color:var(--sauce)}
+.footer__copy{color:var(--on-ink-faint);font-size:.75rem;margin-top:12px}
+
+.sticky-order{
+  position:fixed;left:50%;bottom:16px;translate:-50% 0;z-index:70;display:none;
+  background:var(--sauce);color:#fff;font-family:var(--label);font-weight:600;font-size:.78rem;
+  letter-spacing:.08em;text-transform:uppercase;padding:14px 26px;
+  box-shadow:0 14px 30px -10px rgba(226,85,46,.6);
+}
+
+/* ---------- skeletons ---------- */
+.skeleton{background:linear-gradient(90deg,var(--surface-2) 25%,var(--surface) 50%,var(--surface-2) 75%);
+  background-size:200% 100%;animation:shimmer 1.5s infinite;height:190px}
+.skeleton--tall{height:340px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+.noscript-menu{border:1px solid var(--line);background:var(--surface);padding:28px;line-height:2}
+.noscript-menu h2{margin-bottom:12px}
+
+/* ===========================================================
+   ARABIC / RTL
+   Two things break Arabic if left alone: letter-spacing (it pulls
+   apart a connected script) and the tight display line-heights
+   (Arabic needs room above and below). The Latin wordmark opts
+   back out of all of it.
+   =========================================================== */
+[dir="rtl"]{
+  --display:'Cairo','Tajawal',system-ui,sans-serif;
+  --body:'Cairo','Tajawal',system-ui,sans-serif;
+  --label:'Cairo','Tajawal',system-ui,sans-serif;
+}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3{font-weight:900;line-height:1.2;letter-spacing:0}
+[dir="rtl"] .eyebrow,
+[dir="rtl"] .btn,
+[dir="rtl"] .nav__links a,
+[dir="rtl"] .bstep__title,
+[dir="rtl"] .order__link,
+[dir="rtl"] .footer__links a,
+[dir="rtl"] .marquee__track,
+[dir="rtl"] .sticky-order,
+[dir="rtl"] .menu-card__price,
+[dir="rtl"] .opt__price,
+[dir="rtl"] .tag,
+[dir="rtl"] .cart__total strong{letter-spacing:0}
+[dir="rtl"] .btn::after{transform-origin:right}
+
+/* the wordmark stays Latin in both languages */
+[dir="rtl"] .hero__title,
+[dir="rtl"] .nav__name,
+[dir="rtl"] .footer__name{font-family:var(--display-latin);letter-spacing:.04em}
+[dir="rtl"] .hero__title{letter-spacing:-.01em;line-height:.82}
+[dir="rtl"] .nav__logo{font-family:var(--display-latin)}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .builder__layout{grid-template-columns:1fr}
+  .builder__cart{position:static}
+  .nav__links{
+    position:fixed;inset:var(--nav-h) 0 auto 0;flex-direction:column;gap:20px;
+    background:var(--bg);padding:30px;border-bottom:1px solid var(--line);
+    transform:translateY(-130%);transition:transform .4s var(--ease);box-shadow:var(--shadow);
+  }
+  .nav__links.open{transform:translateY(0)}
+  .nav__toggle{display:flex}
+  .nav__toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav__toggle.open span:nth-child(2){opacity:0}
+  .nav__toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .sticky-order{display:block}
+  .footer{padding-bottom:84px}
+}
+
+@media (max-width:420px){
+  .nav__right{gap:8px}
+  .iconbtn{width:32px;height:32px}
+}
+
+/* ---------- item badge ("8g protein") ----------
+   Optional, driven by `tag` on a MENU item. Outlined rather than filled so it
+   reads as a fact about the item, not as a second price. */
+.tag{
+  display:inline-block;margin-inline-start:6px;padding:2px 7px;
+  border:1px solid var(--sauce);border-radius:99px;
+  font-family:var(--label);font-size:.6rem;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;
+  color:var(--sauce);white-space:nowrap;vertical-align:middle;
+  unicode-bidi:isolate;
+}
+
+.menu-card__item--soon{opacity:.5}
+.tag--soon{border-color:var(--muted);color:var(--muted)}
+
+/* ---------- toast ----------
+   Bottom-centred, and direction-agnostic so RTL needs no mirrored rule.
+   Sits above the sticky order pill (z-index 70) and below the nav (80).
+
+   Never takes pointer events: it must not swallow a tap meant for the option
+   underneath it. The global reduced-motion rule collapses the transition to
+   its end state, which is right here — it appears, it just does not slide. */
+.toast{
+  position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));
+  transform:translate(-50%,14px);
+  z-index:75;max-width:min(92vw,420px);
+  background:var(--ink);color:var(--on-ink);
+  padding:12px 18px;border-radius:99px;
+  font-size:.85rem;line-height:1.35;text-align:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+  opacity:0;pointer-events:none;
+  transition:opacity .22s ease,transform .22s ease;
+}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+/* Must live AFTER the base rule, not up in the responsive block: same
+   specificity, so source order decides and the base bottom would win. Lifts
+   the toast clear of the sticky order pill, which only exists at this width.
+   Bottom-anchoring is what makes this necessary again — the centred version
+   did not need it. */
+@media (max-width:900px){
+  .toast{bottom:calc(78px + env(safe-area-inset-bottom))}
+}
+
+/* ---------- reduced motion: final state, immediately ---------- */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .hero__el{opacity:1!important;transform:none!important}
+  .marquee__track{animation:none}
+}

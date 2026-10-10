@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sip &amp; Crunch — Fresh Sips, Bold Crunch</title>
+  <meta name="description" content="Loaded chip boxes drowned in cheddar, ranch and 1000 island. Fresh juices. Build your box and order on WhatsApp." />
+
+  <meta property="og:title" content="Sip & Crunch — Fresh Sips, Bold Crunch" />
+  <meta property="og:description" content="Bold crunchy chips, cheesy sauces, loaded add-ons & fresh juices." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="images/pic4.jpg" />
+  <meta name="theme-color" content="#EBE7DD" id="themeColor" />
+
+  <!-- Theme + language are applied BEFORE first paint, so a returning visitor
+       never sees a flash of the wrong palette or the wrong text direction. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("sc-theme");
+        if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+        var l = localStorage.getItem("sc-lang") === "ar" ? "ar" : "en";
+        document.documentElement.lang = l;
+        document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+      } catch (e) { /* private mode — fall back to the defaults in the markup */ }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Anton has no Arabic glyphs, so Cairo carries both display and body in RTL. -->
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600&family=Cairo:wght@400;600;900&display=swap" rel="stylesheet" />
+  <!-- ?v= is a cache-buster. Bump it whenever styles.css or script.js changes,
+       otherwise a browser that cached the old file keeps serving it and the
+       change looks like it did not happen. -->
+  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍟</text></svg>" />
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <a href="#top" class="nav__brand">
+    <span class="nav__logo">S&amp;C</span>
+    <span class="nav__name">Sip &amp; Crunch</span>
+  </a>
+
+  <div class="nav__right">
+    <nav class="nav__links" id="navLinks" aria-label="Main">
+      <a href="#menu" data-i18n="nav.menu">Menu</a>
+      <a href="#builder" data-i18n="nav.build">Build</a>
+      <a href="#order" data-i18n="nav.find">Find us</a>
+      <a href="#builder" class="btn btn--sauce btn--sm" data-i18n="nav.order">Order</a>
+    </nav>
+
+    <div class="nav__tools">
+      <!-- shows the language you can switch TO -->
+      <button class="iconbtn iconbtn--lang" id="langToggle" type="button"
+              aria-label="التبديل إلى العربية" data-i18n-aria="a11y.lang">
+        <span id="langLabel">ع</span>
+      </button>
+      <button class="iconbtn" id="themeToggle" type="button"
+              aria-label="Switch to dark mode" data-i18n-aria="a11y.theme" aria-pressed="false">
+        <svg class="ico ico--moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z"/>
+        </svg>
+        <svg class="ico ico--sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3M4.8 4.8l2.1 2.1M17.1 17.1l2.1 2.1M19.2 4.8l-2.1 2.1M6.9 17.1l-2.1 2.1"/>
+        </svg>
+      </button>
+    </div>
+
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" data-i18n-aria="a11y.menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ===== HERO =====
+     No photograph here any more — the hero is the drizzle motif on ink, so the
+     wordmark carries the whole frame with nothing competing behind it. -->
+<section class="hero" id="top">
+  <!-- brand motif: the drizzle, drawn on load -->
+  <svg class="hero__drizzle" viewBox="0 0 600 800" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+    <path class="hero__path" d="M110,110 C240,50 400,90 490,190 C560,270 330,250 110,300 C240,340 420,330 490,410 C550,480 320,470 110,520 C230,560 420,555 490,625 C540,690 300,700 120,710"/>
+  </svg>
+
+  <div class="hero__inner">
+    <p class="eyebrow hero__el" data-i18n="hero.eyebrow">Fresh sips · bold crunch</p>
+    <h1 class="hero__title hero__el">
+      <span class="l1">SIP</span><span class="amp">&amp;</span><span class="l2">CRUNCH</span>
+    </h1>
+    <p class="hero__sub hero__el" data-i18n="hero.sub">Chips drowned in cheddar, ranch and 1000 island. Loaded with strips, beef or hot dog. Cold juice on the side.</p>
+    <div class="hero__cta hero__el">
+      <a href="#builder" class="btn btn--sauce" data-i18n="hero.cta1">Build your box</a>
+      <a href="#menu" class="btn btn--ghost" data-i18n="hero.cta2">See the menu</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track" id="marqueeTrack">
+    <span data-i18n="marquee.1">DROWN IT</span><b>◆</b><span data-i18n="marquee.2">LOAD IT</span><b>◆</b><span data-i18n="marquee.3">CRUNCH IT</span><b>◆</b><span data-i18n="marquee.4">SIP IT</span><b>◆</b>
+    <span data-i18n="marquee.1">DROWN IT</span><b>◆</b><span data-i18n="marquee.2">LOAD IT</span><b>◆</b><span data-i18n="marquee.3">CRUNCH IT</span><b>◆</b><span data-i18n="marquee.4">SIP IT</span><b>◆</b>
+  </div>
+</div>
+
+<!-- ===== MENU ===== -->
+<section class="section menu" id="menu">
+  <div class="section__head">
+    <p class="eyebrow" data-i18n="menu.eyebrow">The good stuff</p>
+    <h2 data-i18n="menu.title">Menu</h2>
+    <p class="lead" data-i18n="menu.lead">Pick a chip. Drown it. Load it up.</p>
+  </div>
+  <div class="menu__grid" id="menuGrid">
+    <div class="skeleton"></div><div class="skeleton"></div>
+    <div class="skeleton"></div><div class="skeleton"></div>
+  </div>
+  <p class="menu__hint" data-i18n="menu.hint">Prices in Omani Rial (OMR).</p>
+</section>
+
+<!-- ===== BUILD A BOX (no entrance animation — conversion path) ===== -->
+<section class="section builder" id="builder">
+  <div class="section__head">
+    <p class="eyebrow" data-i18n="builder.eyebrow">Make it yours</p>
+    <h2 data-i18n="builder.title">Build your box</h2>
+    <p class="lead" data-i18n="builder.lead">Tap what you want. We total it and send it to WhatsApp.</p>
+  </div>
+
+  <div class="builder__layout">
+    <div class="builder__steps" id="builderSteps">
+      <div class="skeleton skeleton--tall"></div>
+    </div>
+
+    <aside class="builder__cart" id="cart">
+      <h3 data-i18n="cart.title">Your box</h3>
+      <ul class="cart__list" id="cartList">
+        <li class="cart__empty" data-i18n="cart.empty">Nothing yet — start picking 👆</li>
+      </ul>
+      <div class="cart__total">
+        <span data-i18n="cart.total">Total</span>
+        <strong id="cartTotal">0.000 OMR</strong>
+      </div>
+      <a href="#" class="btn btn--sauce btn--block" id="orderBtn" data-i18n="cart.order">Order on WhatsApp</a>
+      <p class="cart__fine" data-i18n="cart.fine">Opens WhatsApp with your order ready to send.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ===== STORY ===== -->
+<section class="section story" id="story">
+  <div class="story__inner" id="storyInner">
+    <p class="eyebrow" data-i18n="story.eyebrow">Our story</p>
+    <h2 data-i18n="story.title">Two things, done right.</h2>
+    <p data-i18n="story.body">A box of chips worth queuing for, and something cold to wash it down. No frozen leftovers, no shortcuts — made the moment you order.</p>
+    <a href="https://instagram.com/sip.crunch3" target="_blank" rel="noopener" class="btn btn--ghost" data-i18n="story.cta">Follow @sip.crunch3</a>
+  </div>
+</section>
+
+<!-- ===== FIND US ===== -->
+<section class="section order" id="order">
+  <div class="section__head">
+    <p class="eyebrow" data-i18n="order.eyebrow">Hungry?</p>
+    <h2 data-i18n="order.title">Order now</h2>
+  </div>
+  <div class="order__grid" id="orderGrid">
+    <a class="order__card" id="waCard" href="https://api.whatsapp.com/send?phone=96877579391" target="_blank" rel="noopener">
+      <span class="order__icon">💬</span>
+      <h3 data-i18n="order.waTitle">WhatsApp</h3>
+      <p data-i18n="order.waBody">Send us your order directly.</p>
+      <span class="order__link" data-i18n="order.waCta">Message us →</span>
+    </a>
+    <a class="order__card" href="https://instagram.com/sip.crunch3" target="_blank" rel="noopener">
+      <span class="order__icon">📸</span>
+      <h3 data-i18n="order.igTitle">Instagram</h3>
+      <p data-i18n="order.igBody">@sip.crunch3 — drops &amp; specials.</p>
+      <span class="order__link" data-i18n="order.igCta">Follow us →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <span class="nav__logo">S&amp;C</span>
+  <p class="footer__name">Sip &amp; Crunch</p>
+  <p class="footer__tag" data-i18n="footer.tag">Fresh sips, bold crunch.</p>
+  <nav class="footer__links" aria-label="Footer">
+    <a href="#menu" data-i18n="nav.menu">Menu</a><a href="#builder" data-i18n="nav.build">Build</a>
+    <a href="https://instagram.com/sip.crunch3" target="_blank" rel="noopener" data-i18n="footer.ig">Instagram</a>
+  </nav>
+  <p class="footer__copy">© <span id="year"></span> Sip &amp; Crunch</p>
+</footer>
+
+<a href="#builder" class="sticky-order" data-i18n="sticky">Build &amp; order</a>
+
+<!-- works with JavaScript switched off -->
+<noscript>
+  <style>.skeleton{display:none}.builder__layout,.sticky-order,.nav__tools{display:none}</style>
+  <section class="section" style="padding-top:0">
+    <div class="noscript-menu">
+      <h2>Menu</h2>
+      <p><strong>Chips</strong> — Chili · Protein BBQ (coming soon) — 0.800 OMR</p>
+      <p><strong>Sauces</strong> — Cheddar · Ranch · 1000 Island — 0.300 OMR</p>
+      <p><strong>Add-ons</strong> — Strips 0.400 · Beef 0.500 · Hot Dog 0.300 OMR</p>
+      <p><strong>Toppings</strong> — Corn · Jalapeño · Black Olive</p>
+      <p><strong>Fresh Juices</strong> — 1.000 OMR</p>
+      <p><strong>Pickup</strong> free only</p>
+      <p><a class="btn btn--sauce" href="https://api.whatsapp.com/send?phone=96877579391">Order on WhatsApp</a></p>
+    </div>
+  </section>
+</noscript>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script src="script.js?v=11"></script>
+</body>
+</html>
