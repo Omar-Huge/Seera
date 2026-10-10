@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sip & Crunch — Trailer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="images/pic3.webp" />
+<link rel="preload" as="image" href="images/pic4.webp" />
+<link rel="preload" as="image" href="images/pic2.webp" />
+<link rel="preload" as="image" href="images/pic5.webp" />
+<style>
+  /* Same palette + type as the website (styles.css) so the reel and the site read as one brand. */
+  :root{
+    --cream:#EBE7DD; --ink:#2A2A26; --ink-deep:#141310; --sauce:#E2552E; --muted:#57564E;
+    --display:'Anton',Impact,'Haettenschweiler',sans-serif;
+    --body:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#0b0b0a;font-family:var(--body);overflow:hidden}
+
+  /* 9:16 stage that fits any screen. `container-type:size` lets every size below use
+     cqh/cqw, so type scales with the stage whether it is height- or width-limited. */
+  .wrap{height:100vh;display:grid;place-items:center}
+  .stage{
+    position:relative;width:min(56.25vh,100vw);height:min(100vh,177.78vw);
+    container-type:size;background:var(--ink-deep);color:var(--cream);overflow:hidden;
+    box-shadow:0 0 80px rgba(0,0,0,.6);cursor:pointer;
+  }
+
+  .scene{position:absolute;inset:0;overflow:hidden;visibility:hidden;isolation:isolate}
+
+  /* Photos: full-bleed, darkened so white type always reads on top. */
+  .photo{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;
+    filter:brightness(.62) saturate(1.25) contrast(1.08);will-change:transform}
+  .shade{position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 45%, transparent 35%, rgba(10,10,8,.75) 100%),
+      linear-gradient(to bottom, rgba(10,10,8,.55) 0%, transparent 28%, transparent 62%, rgba(10,10,8,.85) 100%)}
+
+  /* Kinetic type */
+  .kicker{font-family:var(--body);font-weight:700;text-transform:uppercase;letter-spacing:.22em;
+    font-size:2cqh;line-height:1.5;color:var(--sauce);margin-bottom:1.6cqh}
+  .mega{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.86;
+    letter-spacing:.01em;font-size:17cqh;text-shadow:0 .6cqh 3cqh rgba(0,0,0,.45)}
+  .mega .w{display:block}
+  .mega .hot{color:var(--sauce)}
+  .block{position:absolute;left:8%;right:8%}
+  .bottom{bottom:9%}
+  .top{top:9%}
+
+  .tags{display:flex;flex-wrap:wrap;gap:1.2cqh;margin-top:2.4cqh}
+  .tag{font-family:var(--display);text-transform:uppercase;font-size:3.4cqh;letter-spacing:.03em;
+    padding:.35em .75em .3em;border-radius:999px;background:var(--cream);color:var(--ink)}
+  .tag.hot{background:var(--sauce);color:#fff}
+
+  /* Menu card scene (solid cream, like the site) */
+  .s-menu{background:var(--cream);color:var(--ink);display:flex;flex-direction:column;
+    justify-content:center;padding:0 9%}
+  .s-menu .mega{font-size:9cqh;text-shadow:none;margin:1.4cqh 0 4cqh}
+  .row{display:flex;align-items:baseline;gap:1.4cqh;font-family:var(--display);text-transform:uppercase;
+    font-size:5.6cqh;line-height:1.25;border-bottom:.3cqh solid rgba(42,42,38,.14);padding:1cqh 0}
+  .row .dots{flex:1}
+  .row .p{color:var(--sauce);font-size:4.2cqh}
+  .row .name{white-space:nowrap}
+  .row small{display:block;font-family:var(--body);font-weight:700;font-size:1.6cqh;letter-spacing:.14em;
+    color:var(--sauce);line-height:1.2;margin-top:.2cqh}
+  .free{margin-top:3.4cqh;font-weight:600;font-size:2.2cqh;color:var(--muted);line-height:1.5}
+  .free b{color:var(--sauce)}
+
+  /* Montage + flash */
+  .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:20}
+  .s-montage .photo{opacity:0}
+  .s-montage .shade,.s-montage .block{z-index:10}
+  .block .kicker{color:var(--cream);text-shadow:0 .3cqh 1.2cqh rgba(0,0,0,.6)}
+
+  /* End card */
+  .s-end{background:var(--ink-deep);display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:0 8%}
+  .s-end .bgphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:brightness(.28) saturate(1.2) blur(.6cqh);transform:scale(1.1)}
+  .s-end > *:not(.bgphoto){position:relative}
+  .logo{font-family:var(--display);text-transform:uppercase;font-size:12.5cqh;line-height:.9}
+  .logo .amp{color:var(--sauce);display:inline-block;margin:0 .06em}
+  .rule{width:18cqw;height:.5cqh;background:var(--sauce);margin:3cqh auto;border-radius:9px}
+  .cta{font-family:var(--display);text-transform:uppercase;font-size:5.4cqh;letter-spacing:.02em}
+  .cta-sub{font-weight:500;font-size:2.3cqh;color:rgba(235,231,221,.75);margin-top:1.2cqh}
+  .handle{margin-top:4.5cqh;display:inline-flex;align-items:center;gap:1cqh;
+    background:var(--sauce);color:#fff;font-weight:700;font-size:2.6cqh;padding:.8em 1.4em;border-radius:999px}
+
+  /* Film grain — keeps the upscaled video stills from looking smeary */
+  .grain{position:absolute;inset:-50%;z-index:30;pointer-events:none;opacity:.09;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain .5s steps(4) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+
+  /* Segmented progress (hidden in record mode) */
+  .bar{position:absolute;top:0;left:0;height:.45cqh;background:var(--sauce);width:0;z-index:40}
+
+  .hint{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);color:#999;font:13px var(--body);
+    background:#1c1c19;padding:6px 14px;border-radius:20px;white-space:nowrap}
+  .hint b{color:#fff}
+  body.rec .hint, body.rec .bar{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage" id="stage">
+    <div class="bar" id="bar"></div>
+
+    <!-- 1 · HOOK — sauce macro -->
+    <section class="scene s1">
+      <img class="photo" src="images/pic3.webp" alt="" />
+      <div class="shade"></div>
+      <div class="block bottom">
+        <p class="kicker">Cheddar · Ranch · 1000 Island</p>
+        <h1 class="mega"><span class="w">Drown</span><span class="w hot">it.</span></h1>
+      </div>
+    </section>
+
+    <!-- 2 · LOAD — the fully loaded box -->
+    <section class="scene s2">
+      <img class="photo" src="images/pic4.webp" alt="" />
+      <div class="shade"></div>
+      <div class="block bottom">
+        <h2 class="mega"><span class="w">Load</span><span class="w hot">it.</span></h2>
+        <div class="tags">
+          <span class="tag">Strips</span><span class="tag">Beef</span><span class="tag hot">Hot Dog</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · CRUNCH — chips going in -->
+    <section class="scene s3">
+      <img class="photo" src="images/pic2.webp" alt="" style="transform-origin:52% 62%" />
+      <div class="shade"></div>
+      <div class="block top">
+        <h2 class="mega"><span class="w">Crunch</span><span class="w hot">it.</span></h2>
+      </div>
+    </section>
+
+    <!-- 4 · MENU -->
+    <section class="scene s-menu">
+      <p class="kicker">Pick your chip</p>
+      <h2 class="mega">Two ways<br>to start.</h2>
+      <div class="row"><span>Chili</span><span class="dots"></span><span class="p">0.800</span></div>
+      <div class="row"><span class="name">Protein BBQ<small>8g protein</small></span><span class="dots"></span><span class="p coming-soon">Coming Soon</span></div>
+      <p class="free">Corn · Jalapeño · Black olive — <b>free on top.</b><br>Prices in OMR.</p>
+    </section>
+
+    <!-- 5 · SIP — branded box + juice -->
+    <section class="scene s5">
+      <img class="photo" src="images/pic5.webp" alt="" style="object-position:70% 50%" />
+      <div class="shade"></div>
+      <div class="block bottom">
+        <p class="kicker">Fresh juice · 1.000 OMR</p>
+        <h2 class="mega"><span class="w">Sip</span><span class="w hot">it.</span></h2>
+      </div>
+    </section>
+
+    <!-- 6 · MONTAGE — beat-cut flashes -->
+    <section class="scene s-montage">
+      <img class="photo" src="images/pic4.webp" alt="" />
+      <img class="photo" src="images/pic3.webp" alt="" />
+      <img class="photo" src="images/pic5.webp" alt="" style="object-position:70% 50%" />
+      <img class="photo" src="images/pic3.webp" alt="" style="transform-origin:30% 20%" />
+      <div class="shade"></div>
+      <div class="block bottom">
+        <h2 class="mega" style="font-size:13cqh"><span class="w">Built</span><span class="w">your</span><span class="w hot">way.</span></h2>
+      </div>
+    </section>
+
+    <!-- 7 · END CARD -->
+    <section class="scene s-end">
+      <img class="bgphoto" src="images/pic4.webp" alt="" />
+      <p class="kicker">Fresh sips · bold crunch</p>
+      <h2 class="logo" style="margin-top:2cqh">Sip<span class="amp">&amp;</span><br>Crunch</h2>
+      <div class="rule"></div>
+      <p class="cta">Build your box.</p>
+      <p class="cta-sub">Order on WhatsApp in seconds.</p>
+      <span class="handle">@sip.crunch3</span>
+    </section>
+
+    <div class="flash" id="flash"></div>
+    <div class="grain" aria-hidden="true"></div>
+  </div>
+</div>
+
+<p class="hint"><b>F</b> fullscreen · <b>H</b> hide UI for recording · <b>Space</b> pause · click to replay</p>
+
+<script src="vendor/gsap.min.js"></script>
+<script>
+  /* Cut on a 120 BPM grid (1 beat = 0.5s) so any trending track with a steady beat
+     lines up in CapCut without re-timing. Total = 15s, one clean loop. */
+  const B = 0.5;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const flash = $('#flash');
+
+  const tl = gsap.timeline({ repeat: -1, defaults: { ease: 'power3.out' } });
+
+  // show a scene for [start, end), hide everything else it replaced
+  const show = (el, at, dur) => {
+    tl.set(el, { visibility: 'visible' }, at);
+    tl.set(el, { visibility: 'hidden' }, at + dur);
+  };
+  const pop = (at, strength = .85) =>
+    tl.fromTo(flash, { opacity: strength }, { opacity: 0, duration: .35, ease: 'power2.out', immediateRender: false }, at);
+  // words slam in from oversized + blurred
+  const slam = (els, at, gap = B) =>
+    els.forEach((w, i) => tl.fromTo(w,
+      { scale: 1.9, opacity: 0, filter: 'blur(12px)' },
+      { scale: 1, opacity: 1, filter: 'blur(0px)', duration: .38, ease: 'expo.out' }, at + i * gap));
+
+  /* 1 · DROWN IT (0 – 2.5s) */
+  let t = 0, s = $('.s1');
+  show(s, t, 5 * B);
+  tl.fromTo($('.photo', s), { scale: 1.35, rotate: -2 }, { scale: 1.08, rotate: 0, duration: 5 * B, ease: 'none' }, t);
+  tl.fromTo($('.kicker', s), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .5 }, t + .1);
+  slam($$('.w', s), t + B);
+
+  /* 2 · LOAD IT (2.5 – 5s) */
+  t += 5 * B; s = $('.s2');
+  show(s, t, 5 * B); pop(t);
+  tl.fromTo($('.photo', s), { scale: 1.05, yPercent: -4 }, { scale: 1.22, yPercent: 3, duration: 5 * B, ease: 'none' }, t);
+  slam($$('.w', s), t + .1);
+  $$('.tag', s).forEach((g, i) => tl.fromTo(g, { y: 40, opacity: 0, scale: .6 },
+    { y: 0, opacity: 1, scale: 1, duration: .45, ease: 'back.out(2.2)' }, t + 2 * B + i * B / 2));
+
+  /* 3 · CRUNCH IT (5 – 7s) — punch zoom + shake on the beat */
+  t += 5 * B; s = $('.s3');
+  show(s, t, 4 * B); pop(t);
+  tl.fromTo($('.photo', s), { scale: 2.1 }, { scale: 1.7, duration: .5, ease: 'expo.out' }, t)
+    .to($('.photo', s), { scale: 1.55, duration: 3 * B, ease: 'none' }, t + .5);
+  tl.fromTo(s, { x: 0 }, { keyframes: { x: [-14, 12, -9, 7, -4, 0] }, duration: .35, ease: 'none' }, t + B);
+  slam($$('.w', s), t + .1, B);
+
+  /* 4 · MENU (7 – 10s) */
+  t += 4 * B; s = $('.s-menu');
+  show(s, t, 6 * B);
+  tl.fromTo(s, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .45, ease: 'expo.inOut' }, t);
+  tl.fromTo($('.kicker', s), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .4 }, t + .3);
+  tl.fromTo($('.mega', s), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .5 }, t + .4);
+  $$('.row', s).forEach((r, i) => tl.fromTo(r, { opacity: 0, x: -60 },
+    { opacity: 1, x: 0, duration: .45, ease: 'back.out(1.6)' }, t + 2 * B + i * B / 2));
+  tl.fromTo($('.free', s), { opacity: 0 }, { opacity: 1, duration: .4 }, t + 4 * B);
+
+  /* 5 · SIP IT (10 – 12s) */
+  t += 6 * B; s = $('.s5');
+  show(s, t, 4 * B); pop(t, .6);
+  tl.fromTo($('.photo', s), { scale: 1.3, xPercent: 4 }, { scale: 1.1, xPercent: -2, duration: 4 * B, ease: 'none' }, t);
+  tl.fromTo($('.kicker', s), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .45 }, t + .1);
+  slam($$('.w', s), t + .3);
+
+  /* 6 · MONTAGE (12 – 13s) — a new shot every half-beat */
+  t += 4 * B; s = $('.s-montage');
+  show(s, t, 2 * B);
+  $$('.photo', s).forEach((p, i) => {
+    const at = t + i * B / 2;
+    tl.fromTo(p, { opacity: 1, zIndex: i, scale: 1.3 },
+      { scale: 1.12, duration: B / 2, ease: 'power2.out', immediateRender: false }, at);
+    pop(at, .5);
+  });
+  tl.fromTo($$('.w', s), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .2, stagger: B / 3 }, t);
+
+  /* 7 · END CARD (13 – 15s+) */
+  t += 2 * B; s = $('.s-end');
+  show(s, t, 4 * B); pop(t, 1);
+  tl.fromTo($('.bgphoto', s), { scale: 1.25 }, { scale: 1.1, duration: 4 * B, ease: 'none' }, t);
+  tl.fromTo($('.logo', s), { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: .5, ease: 'expo.out' }, t);
+  tl.fromTo($('.kicker', s), { opacity: 0 }, { opacity: 1, duration: .4 }, t + .2);
+  tl.fromTo($('.rule', s), { scaleX: 0 }, { scaleX: 1, duration: .4 }, t + .35);
+  tl.fromTo([$('.cta', s), $('.cta-sub', s)], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .4, stagger: .12 }, t + .5);
+  tl.fromTo($('.handle', s), { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .5, ease: 'back.out(2.5)' }, t + .8);
+
+  // progress bar follows the master clock
+  const bar = $('#bar');
+  tl.eventCallback('onUpdate', () => { bar.style.width = (tl.progress() * 100) + '%'; });
+
+  // controls
+  const restart = () => { tl.restart(); tl.play(); };
+  $('#stage').addEventListener('click', restart);
+  document.addEventListener('keydown', e => {
+    const k = e.key.toLowerCase();
+    if (k === 'f') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    } else if (k === 'h') document.body.classList.toggle('rec');
+    else if (k === ' ') { e.preventDefault(); tl.paused(!tl.paused()); }
+    else if (k === 'r') restart();
+  });
+  if (new URLSearchParams(location.search).has('rec')) document.body.classList.add('rec');
+
+  // don't start until photos + Anton are ready, or the first loop records half-loaded
+  Promise.all([document.fonts.ready, ...$$('img').map(i => i.decode?.().catch(() => {}))])
+    .then(() => {
+      // ?t=13.5 freezes on that second — handy for grabbing a cover image for the reel
+      const at = parseFloat(new URLSearchParams(location.search).get('t'));
+      if (isNaN(at)) restart(); else tl.pause(at);
+    });
+  tl.pause();
+</script>
+</body>
+</html>

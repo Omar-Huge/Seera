@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sip & Crunch — Trailer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Cairo:wght@600;700;900&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="images/pic3.webp" />
+<link rel="preload" as="image" href="images/pic4.webp" />
+<link rel="preload" as="image" href="images/pic5.webp" />
+<style>
+  /* Same palette + type as the website (styles.css) so the reel and the site read as one brand. */
+  :root{
+    --cream:#EBE7DD; --ink:#2A2A26; --ink-deep:#141310; --sauce:#E2552E; --muted:#57564E;
+    --display:'Anton',Impact,'Haettenschweiler',sans-serif;
+    --body:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#0b0b0a;font-family:var(--body);overflow:hidden}
+
+  /* 9:16 stage that fits any screen. `container-type:size` lets every size below use
+     cqh/cqw, so type scales with the stage whether it is height- or width-limited. */
+  .wrap{height:100vh;display:grid;place-items:center}
+  .stage{
+    position:relative;width:min(56.25vh,100vw);height:min(100vh,177.78vw);
+    container-type:size;background:var(--ink-deep);color:var(--cream);overflow:hidden;
+    box-shadow:0 0 80px rgba(0,0,0,.6);cursor:pointer;
+  }
+
+  .scene{position:absolute;inset:0;overflow:hidden;visibility:hidden;isolation:isolate}
+
+  /* Photos: full-bleed, darkened so white type always reads on top. */
+  .photo{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;
+    filter:brightness(.62) saturate(1.25) contrast(1.08);will-change:transform}
+  .shade{position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 45%, transparent 35%, rgba(10,10,8,.75) 100%),
+      linear-gradient(to bottom, rgba(10,10,8,.55) 0%, transparent 28%, transparent 62%, rgba(10,10,8,.85) 100%)}
+
+  /* Kinetic type */
+  .kicker{font-family:var(--body);font-weight:700;text-transform:uppercase;letter-spacing:.22em;
+    font-size:2cqh;line-height:1.5;color:var(--sauce);margin-bottom:1.6cqh}
+  .mega{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.86;
+    letter-spacing:.01em;font-size:14cqh;text-shadow:0 .6cqh 3cqh rgba(0,0,0,.45)}
+  .mega .w{display:block}
+  .mega .hot{color:var(--sauce)}
+  .block{position:absolute;left:8%;right:17%}
+  /* Reels safe zone: caption + username cover the bottom ~20%, like/comment/share
+     buttons sit on the right edge, the "Reels" header on top. Text stays clear of all three. */
+  .bottom{bottom:23%}
+  .top{top:9%}
+
+  .tags{display:flex;flex-wrap:wrap;gap:1.2cqh;margin-top:2.4cqh}
+  .tag{font-family:var(--display);text-transform:uppercase;font-size:3.4cqh;letter-spacing:.03em;
+    padding:.35em .75em .3em;border-radius:999px;background:var(--cream);color:var(--ink)}
+  .tag.hot{background:var(--sauce);color:#fff}
+
+  /* Montage + flash */
+  .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:20}
+  .block .kicker{color:var(--cream);text-shadow:0 .3cqh 1.2cqh rgba(0,0,0,.6)}
+
+  /* End card */
+  .s-end{background:var(--ink-deep);display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:0 12% 16%}
+  .s-end .bgphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:brightness(.28) saturate(1.2) blur(.6cqh);transform:scale(1.1)}
+  .s-end > *:not(.bgphoto){position:relative}
+  .logo{font-family:var(--display);text-transform:uppercase;font-size:6cqh;line-height:1;letter-spacing:.02em}
+  .s-end .handle{white-space:nowrap;font-size:2.3cqh;margin-top:3.4cqh}
+  .soon{font-family:var(--display);text-transform:uppercase;font-size:15cqh;line-height:.86;margin-top:1.2cqh}
+  .soon .w{display:block}
+  .soon .hot{color:var(--sauce)}
+  /* "loading" bar that never quite finishes — the site is almost here */
+  .load{width:60%;height:1.1cqh;border-radius:9px;background:rgba(235,231,221,.18);margin:3.4cqh auto 2.6cqh;overflow:hidden}
+  .load i{display:block;height:100%;width:100%;background:var(--sauce);border-radius:9px;transform-origin:left}
+  .logo .amp{color:var(--sauce);display:inline-block;margin:0 .06em}
+  .rule{width:18cqw;height:.5cqh;background:var(--sauce);margin:3cqh auto;border-radius:9px}
+  .cta{font-family:var(--display);text-transform:uppercase;font-size:5.4cqh;letter-spacing:.02em}
+  .cta-sub{font-weight:500;font-size:2.3cqh;color:rgba(235,231,221,.75);margin-top:1.2cqh}
+  .handle{margin-top:4.5cqh;display:inline-flex;align-items:center;gap:1cqh;
+    background:var(--sauce);color:#fff;font-weight:700;font-size:2.6cqh;padding:.8em 1.4em;border-radius:999px}
+
+  /* Film grain — keeps the upscaled video stills from looking smeary */
+  .grain{position:absolute;inset:-50%;z-index:30;pointer-events:none;opacity:.09;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain .5s steps(4) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+
+  /* Segmented progress (hidden in record mode) */
+  .bar{position:absolute;top:0;left:0;height:.45cqh;background:var(--sauce);width:0;z-index:40}
+
+  .hint{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);color:#999;font:13px var(--body);
+    background:#1c1c19;padding:6px 14px;border-radius:20px;white-space:nowrap}
+  .hint b{color:#fff}
+  body.rec .hint, body.rec .bar{display:none}
+
+  .safe{direction:ltr;display:none;position:absolute;inset:0;z-index:50;pointer-events:none;color:#fff;font:600 1.7cqh var(--body)}
+  body.show-safe .safe{display:block}
+  .safe__top{position:absolute;top:0;left:0;right:0;height:10%;padding:3cqh 4%;font-size:2.4cqh;
+    background:linear-gradient(rgba(255,0,80,.28),rgba(255,0,80,.12))}
+  .safe__side{position:absolute;right:2.5%;bottom:21%;display:flex;flex-direction:column;gap:3cqh}
+  .safe__side i{width:4.4cqh;height:4.4cqh;border-radius:50%;background:rgba(255,0,80,.45);border:.25cqh solid #fff}
+  .safe__cap{position:absolute;left:0;right:0;bottom:0;height:20%;padding:3cqh 4%;line-height:1.5;
+    background:linear-gradient(rgba(255,0,80,.12),rgba(255,0,80,.3))}
+
+  /* Arabic: Cairo Black, like the website's [dir=rtl] rules */
+  .stage[dir="rtl"]{--display:'Cairo',system-ui,sans-serif;--body:'Cairo',system-ui,sans-serif}
+  .stage[dir="rtl"] .mega,.stage[dir="rtl"] .soon{font-weight:900;line-height:1.12;letter-spacing:0;font-size:9.5cqh}
+  .stage[dir="rtl"] .s-built .mega{font-size:8.5cqh}
+  .stage[dir="rtl"] .soon{font-size:14cqh}
+  .stage[dir="rtl"] .kicker,.stage[dir="rtl"] .dm .count{letter-spacing:0;font-size:2.4cqh}
+  .stage[dir="rtl"] .step{font-weight:700;font-size:2.6cqh;letter-spacing:0}
+  .stage[dir="rtl"] .step b{font-weight:700}
+  .stage[dir="rtl"] .dm{font-size:3cqh;border-radius:2.6cqh 2.6cqh .6cqh 2.6cqh}
+  .stage[dir="rtl"] .dm:nth-child(even){border-radius:2.6cqh 2.6cqh 2.6cqh .6cqh}
+  .stage[dir="rtl"] .load i{transform-origin:right}
+  .stage[dir="rtl"] .logo{direction:ltr}
+
+  /* 1 · "You asked" — DM bubbles over a blurred food shot */
+  .s-ask .photo{filter:brightness(.3) saturate(1.1) blur(.5cqh)}
+  .dms{position:absolute;top:15%;left:8%;right:17%;display:flex;flex-direction:column;gap:1.6cqh}
+  .dm{align-self:flex-start;max-width:82%;background:var(--cream);color:var(--ink);font-weight:600;
+    font-size:2.7cqh;line-height:1.3;padding:1.3cqh 2cqh;border-radius:2.6cqh 2.6cqh 2.6cqh .6cqh;
+    box-shadow:0 1cqh 3cqh rgba(0,0,0,.35)}
+  .dm:nth-child(even){align-self:flex-end;border-radius:2.6cqh 2.6cqh .6cqh 2.6cqh}
+  .dm .count{display:block;font-size:1.6cqh;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--sauce);margin-top:.4cqh}
+
+  /* 2 · "So we built it" — solid sauce card */
+  .s-built{background:var(--sauce);color:#fff}
+  .s-built::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(60% 45% at 50% 78%, rgba(255,214,170,.55), transparent 70%)}
+  .s-built .block{top:9.5%}
+  .s-built .kicker{color:rgba(255,255,255,.88);text-shadow:none}
+  .s-built .mega{font-size:9cqh;text-shadow:none}
+  .s-built .mega .w{display:inline-block;margin-inline-end:.18em}
+  .s-built .mega .hot{color:var(--ink)}
+
+  /* The phone: the real website (mobile screenshots from index.html) in a simple frame */
+  .phone{position:absolute;left:50%;top:37.5%;width:31cqh;margin-left:-17.5cqh;padding:1.2cqh;border-radius:5.4cqh;
+    background:#121210;box-shadow:0 0 0 .35cqh #3a3a34 inset, 0 4cqh 8cqh rgba(60,15,0,.55), 0 1cqh 2cqh rgba(0,0,0,.35);
+    transform-origin:50% 100%}
+  .phone::before{content:"";position:absolute;top:2.1cqh;left:50%;width:9cqh;height:2.6cqh;margin-left:-4.5cqh;
+    background:#121210;border-radius:2cqh;z-index:3}
+  .screen{position:relative;aspect-ratio:390/844;border-radius:4.3cqh;overflow:hidden;background:var(--cream)}
+  .screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .tap{position:absolute;left:var(--x);top:var(--y);width:7cqh;height:7cqh;margin:-3.5cqh 0 0 -3.5cqh;border-radius:50%;
+    background:rgba(255,255,255,.7);border:.45cqh solid #fff;box-shadow:0 0 0 .9cqh rgba(42,42,38,.28), 0 .6cqh 2cqh rgba(0,0,0,.35);opacity:0;z-index:2}
+  .stage[dir="rtl"] .tap{left:var(--xa,var(--x));top:var(--ya,var(--y))}
+  .ring{position:absolute;left:var(--x);top:var(--y);width:24cqh;height:9cqh;margin:-4.5cqh 0 0 -12cqh;border-radius:2cqh;
+    border:.5cqh solid var(--sauce);box-shadow:0 0 3cqh rgba(226,85,46,.8);opacity:0;z-index:2}
+  .stage[dir="rtl"] .ring{left:var(--xa,var(--x));top:var(--ya,var(--y))}
+
+  /* 3 · steps */
+  .step{font-family:var(--display);font-size:2.6cqh;letter-spacing:.04em;color:var(--sauce);margin-bottom:1cqh;
+    text-shadow:0 .3cqh 1.2cqh rgba(0,0,0,.6)}
+  .step b{font-weight:400;color:var(--cream)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage" id="stage">
+    <div class="bar" id="bar"></div>
+
+    <!-- 1 · YOU ASKED — the messages that kept coming in -->
+    <section class="scene s-ask">
+      <img class="photo" src="images/pic4.webp" alt="" />
+      <div class="dms">
+        <p class="dm" data-ar="أقدر أطلب أونلاين؟؟">Can I order online??</p>
+        <p class="dm" data-ar="عندكم موقع؟ 🙏">Do you have a website? 🙏</p>
+        <p class="dm" data-ar="كيف أطلب؟&lt;span class=&quot;count&quot;&gt;+ وغيرها كثير&lt;/span&gt;">How do I order?<span class="count">+ so many more</span></p>
+      </div>
+      <div class="block bottom">
+        <h1 class="mega"><span class="w" data-ar="إنتو">You</span><span class="w hot" data-ar="طلبتوها.">asked.</span></h1>
+      </div>
+    </section>
+
+    <!-- 2 · SO WE BUILT IT — and here it is: the real site, tapped through on a phone -->
+    <section class="scene s-built">
+      <div class="block">
+        <p class="kicker" data-ar="موقع Sip &amp;amp; Crunch في الطريق">Sip &amp; Crunch is going online</p>
+        <h2 class="mega"><span class="w" data-ar="وإحنا">So we</span><span class="w hot" data-ar="سوّيناه.">built it.</span></h2>
+      </div>
+      <div class="phone">
+        <div class="screen">
+          <img class="scr scr-hero" src="trailer-assets/site-en-hero.png" data-ar-src="trailer-assets/site-ar-hero.png" alt="" />
+          <img class="scr scr-build0" src="trailer-assets/site-en-build0.png" data-ar-src="trailer-assets/site-ar-build0.png" alt="" />
+          <img class="scr scr-build1" src="trailer-assets/site-en-build1.png" data-ar-src="trailer-assets/site-ar-build1.png" alt="" />
+          <img class="scr scr-build2" src="trailer-assets/site-en-build2.png" data-ar-src="trailer-assets/site-ar-build2.png" alt="" />
+          <img class="scr scr-cart" src="trailer-assets/site-en-cart.png" data-ar-src="trailer-assets/site-ar-cart.png" alt="" />
+          <i class="tap tap-1" style="--x:28%;--y:65%;--xa:66%"></i>
+          <i class="tap tap-2" style="--x:31.5%;--y:58%;--xa:45%;--ya:52%"></i>
+          <i class="tap tap-3" style="--x:62%;--y:67%;--xa:60%"></i>
+          <i class="ring" style="--x:73%;--y:68%;--xa:30%"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · PICK IT -->
+    <section class="scene s-pick">
+      <img class="photo" src="images/pic5.webp" alt="" style="object-position:70% 50%" />
+      <div class="shade"></div>
+      <div class="block bottom">
+        <p class="step">01 <b data-ar="· حار · بروتين باربكيو (قريباً)">· Chili · Protein BBQ (coming soon)</b></p>
+        <h2 class="mega"><span class="w" data-ar="اختر">Pick</span><span class="w hot" data-ar="الشيبس.">it.</span></h2>
+      </div>
+    </section>
+
+    <!-- 4 · DROWN IT -->
+    <section class="scene s-drown">
+      <img class="photo" src="images/pic3.webp" alt="" />
+      <div class="shade"></div>
+      <div class="block bottom">
+        <p class="step">02 <b data-ar="· شيدر · رانش · ألف جزيرة">· Cheddar · Ranch · 1000 Island</b></p>
+        <h2 class="mega"><span class="w" data-ar="غرّقه">Drown</span><span class="w hot" data-ar="بالصوص.">it.</span></h2>
+      </div>
+    </section>
+
+    <!-- 5 · LOAD IT -->
+    <section class="scene s-load">
+      <img class="photo" src="images/pic4.webp" alt="" />
+      <div class="shade"></div>
+      <div class="block bottom">
+        <p class="step">03 <b data-ar="· ستربس · لحم · هوت دوق">· Strips · Beef · Hot Dog</b></p>
+        <h2 class="mega"><span class="w" data-ar="حمّله">Load</span><span class="w hot" data-ar="على كيفك.">it.</span></h2>
+      </div>
+    </section>
+
+    <!-- 6 · END CARD — coming soon -->
+    <section class="scene s-end">
+      <img class="bgphoto" src="images/pic4.webp" alt="" />
+      <h2 class="logo">Sip<span class="amp">&amp;</span>Crunch</h2>
+      <p class="kicker" style="margin:1.4cqh 0 0" data-ar="الطلب أونلاين">Online ordering</p>
+      <h2 class="soon"><span class="w" data-ar="قريباً">Coming</span><span class="w hot" data-ar="جداً.">soon.</span></h2>
+      <div class="load"><i></i></div>
+      <p class="cta-sub" data-ar="جهّز صندوقك من موقعنا.">Build your box on our website.</p>
+      <span class="handle" data-ar="تابعنا @sip.crunch3 ليوم الإطلاق">Follow @sip.crunch3 for launch</span>
+    </section>
+
+    <!-- Instagram Reel UI mock (G / ?safe) — shows what the app covers. Never on in recordings unless toggled. -->
+    <div class="safe" aria-hidden="true">
+      <div class="safe__top">Reels</div>
+      <div class="safe__side"><i></i><i></i><i></i><i></i></div>
+      <div class="safe__cap"><b>sip.crunch3</b> · Follow<br>You asked — so we built it 🙌 …</div>
+    </div>
+    <div class="flash" id="flash"></div>
+    <div class="grain" aria-hidden="true"></div>
+  </div>
+</div>
+
+<audio id="music" src="trailer-assets/soundtrack.wav?v=4" preload="auto"></audio>
+<p class="hint"><b>Click</b> to play with sound · <b>S</b> song: <b id="song">A · Life is a Dream</b> · <b>M</b> mute · <b>F</b> fullscreen · <b>H</b> hide UI for recording · <b>Space</b> pause · <b>L</b> English / عربي · <b>G</b> Instagram overlay · click to replay</p>
+
+<script src="vendor/gsap.min.js"></script>
+<script>
+  /* The story: you asked → so we built it → pick / drown / load → order online.
+     Cut on a 120 BPM grid (1 beat = 0.5s) so a trending track lines up in CapCut
+     without re-timing. Total = 12s, one clean loop. */
+  const B = 0.5;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const flash = $('#flash');
+
+  /* English / Arabic. Each translatable element carries its Arabic in data-ar; the English
+     is remembered on first switch. Same DOM nodes either way, so the timeline is untouched. */
+  const stage = document.getElementById('stage');
+  const setLang = (lang) => {
+    stage.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    stage.lang = lang;
+    document.querySelectorAll('[data-ar-src]').forEach(el => {
+      if (el.dataset.enSrc === undefined) el.dataset.enSrc = el.getAttribute('src');
+      el.src = lang === 'ar' ? el.dataset.arSrc : el.dataset.enSrc;
+    });
+    document.querySelectorAll('[data-ar]').forEach(el => {
+      if (el.dataset.en === undefined) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'ar' ? el.dataset.ar : el.dataset.en;
+    });
+  };
+  const params = new URLSearchParams(location.search);
+  if (params.get('lang') === 'ar') setLang('ar');
+  if (params.has('safe')) document.body.classList.add('show-safe');
+
+  const tl = gsap.timeline({ repeat: -1, defaults: { ease: 'power3.out' } });
+
+  const show = (el, at, dur) => {
+    tl.set(el, { visibility: 'visible' }, at);
+    tl.set(el, { visibility: 'hidden' }, at + dur);
+  };
+  const pop = (at, strength = .85) =>
+    tl.fromTo(flash, { opacity: strength }, { opacity: 0, duration: .35, ease: 'power2.out', immediateRender: false }, at);
+  // words slam in from oversized + blurred
+  const slam = (els, at, gap = B / 2) =>
+    els.forEach((w, i) => tl.fromTo(w,
+      { scale: 1.9, opacity: 0, filter: 'blur(12px)' },
+      { scale: 1, opacity: 1, filter: 'blur(0px)', duration: .38, ease: 'expo.out' }, at + i * gap));
+  // one photo step: slow push-in, step label, two-word slam
+  const stepScene = (sel, at, dur, from, to) => {
+    const s = $(sel);
+    show(s, at, dur); pop(at, .7);
+    tl.fromTo($('.photo', s), from, { ...to, duration: dur, ease: 'none' }, at);
+    tl.fromTo($('.step', s), { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: .3 }, at + .05);
+    slam($$('.w', s), at + .1);
+  };
+
+  /* 1 · YOU ASKED (0 – 2.5s) — a message pops in on every beat */
+  let t = 0, s = $('.s-ask');
+  show(s, t, 5 * B);
+  tl.fromTo($('.photo', s), { scale: 1.1 }, { scale: 1.2, duration: 5 * B, ease: 'none' }, t);
+  $$('.dm', s).forEach((d, i) => tl.fromTo(d,
+    { y: 30, opacity: 0, scale: .85 },
+    { y: 0, opacity: 1, scale: 1, duration: .35, ease: 'back.out(2)' }, t + .15 + i * B * .8));
+  slam($$('.w', s), t + 3 * B);
+
+  /* 2 · SO WE BUILT IT (2.5 – 6s) — orange wipe, then the phone rises and taps through the
+     real site: Build your box → Chili → +Beef → total. Taps land on the beat. */
+  t += 5 * B; s = $('.s-built');
+  show(s, t, 7 * B);
+  tl.fromTo(s, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .35, ease: 'expo.inOut' }, t);
+  tl.fromTo($('.kicker', s), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .3 }, t + .15);
+  slam($$('.w', s), t + .2);
+  const phone = $('.phone', s), scr = n => $('.scr-' + n, s);
+  tl.fromTo(phone, { yPercent: 70, rotate: 8, opacity: 0 }, { yPercent: 0, rotate: -3, opacity: 1, duration: .55, ease: 'expo.out' }, t + B);
+  tl.to(phone, { rotate: 2, yPercent: -2, duration: 5 * B, ease: 'sine.inOut' }, t + 2 * B);
+  ['hero', 'build0', 'build1', 'build2', 'cart'].forEach((n, i) => tl.set(scr(n), { yPercent: i ? 100 : 0, opacity: 1 }, t));
+  const tap = (el, at) => tl.fromTo(el, { opacity: 0, scale: .4 },
+    { keyframes: [{ opacity: 1, scale: 1, duration: .12 }, { opacity: 0, scale: 1.7, duration: .28 }], immediateRender: false }, at);
+  const slide = (from, to, at) => {
+    tl.to(scr(from), { yPercent: -100, duration: .32, ease: 'power3.inOut' }, at);
+    tl.fromTo(scr(to), { yPercent: 100 }, { yPercent: 0, duration: .32, ease: 'power3.inOut', immediateRender: false }, at);
+  };
+  tap($('.tap-1', s), t + 2 * B);                       // 3.5  "Build your box"
+  slide('hero', 'build0', t + 2 * B + .2);
+  tap($('.tap-2', s), t + 3 * B + .1);                  // 4.1  Chili
+  tl.fromTo(scr('build1'), { yPercent: 0, opacity: 0 }, { opacity: 1, duration: .08, immediateRender: false }, t + 3 * B + .15);
+  tl.set(scr('build0'), { opacity: 0 }, t + 3 * B + .25);
+  slide('build1', 'build2', t + 4 * B);                 // 4.5  scroll to sauces / add-ons
+  tap($('.tap-3', s), t + 4 * B + .35);                 // 4.85 +Beef
+  slide('build2', 'cart', t + 5 * B + .15);             // 5.15 the box + total
+  tl.fromTo($('.ring', s), { opacity: 0, scale: 1.3 },
+    { keyframes: [{ opacity: 1, scale: 1, duration: .2 }, { opacity: .85, duration: .35 }], immediateRender: false }, t + 6 * B);
+  tl.to(phone, { scale: 1.04, duration: 1, ease: 'power2.out' }, t + 6 * B);
+
+  /* 3–5 · PICK / DROWN / LOAD (6 – 9s) — one beat pair each */
+  t += 7 * B;
+  stepScene('.s-pick',  t,         2 * B, { scale: 1.3, xPercent: 4 },   { scale: 1.12, xPercent: -2 });
+  stepScene('.s-drown', t + 2 * B, 2 * B, { scale: 1.35, rotate: -2 },   { scale: 1.12, rotate: 0 });
+  stepScene('.s-load',  t + 4 * B, 2 * B, { scale: 1.05, yPercent: -4 }, { scale: 1.2, yPercent: 3 });
+
+  /* 6 · COMING SOON (9 – 12s) — loops back into the messages */
+  t += 6 * B; s = $('.s-end');
+  show(s, t, 6 * B); pop(t, 1);
+  tl.fromTo($('.bgphoto', s), { scale: 1.25 }, { scale: 1.1, duration: 6 * B, ease: 'none' }, t);
+  tl.fromTo([$('.logo', s), $('.kicker', s)], { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: .35, stagger: .08 }, t);
+  slam($$('.soon .w', s), t + .2);
+  tl.fromTo($('.load', s), { opacity: 0 }, { opacity: 1, duration: .2 }, t + .7);
+  tl.fromTo($('.load i', s), { scaleX: 0 }, { scaleX: .9, duration: 1.8, ease: 'power2.out' }, t + .7);
+  tl.fromTo($('.cta-sub', s), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .3 }, t + .9);
+  tl.fromTo($('.handle', s), { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .45, ease: 'back.out(2.5)' }, t + 1.1);
+
+  // progress bar follows the master clock
+  const bar = $('#bar');
+  tl.eventCallback('onUpdate', () => { bar.style.width = (tl.progress() * 100) + '%'; });
+
+  // controls
+  /* Soundtrack (trailer-assets/soundtrack.wav, generated by make_soundtrack.py on the same 12s clock).
+     Browsers only allow sound after a click, so the first click restarts picture + sound together. */
+  const music = $('#music');
+  const SONGS = [['trailer-assets/soundtrack.wav?v=4', 'A · Life is a Dream'],
+                 ['trailer-assets/soundtrack-b.wav?v=4', 'B · Funkee Monkeee'],
+                 ['trailer-assets/soundtrack-c.wav?v=4', 'C · Friday Routine']];
+  let song = 0;
+  const syncMusic = () => { music.currentTime = 0; music.play().catch(() => {}); };
+  tl.eventCallback('onRepeat', syncMusic);
+  const restart = () => { tl.restart(); tl.play(); syncMusic(); };
+  $('#stage').addEventListener('click', restart);
+  document.addEventListener('keydown', e => {
+    const k = e.key.toLowerCase();
+    if (k === 'f') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    } else if (k === 'h') document.body.classList.toggle('rec');
+    else if (k === ' ') { e.preventDefault(); tl.paused(!tl.paused()); tl.paused() ? music.pause() : music.play().catch(() => {}); }
+    else if (k === 'r') restart();
+    else if (k === 'l') { setLang(stage.dir === 'rtl' ? 'en' : 'ar'); document.fonts.ready.then(restart); }
+    else if (k === 'g') document.body.classList.toggle('show-safe');
+    else if (k === 'm') music.muted = !music.muted;
+    else if (k === 's') {                               // A/B/C soundtracks from make_soundtrack.py
+      song = (song + 1) % SONGS.length;
+      music.src = SONGS[song][0]; $('#song').textContent = SONGS[song][1]; restart();
+    }
+  });
+  if (new URLSearchParams(location.search).has('rec')) document.body.classList.add('rec');
+
+  // don't start until photos + Anton are ready, or the first loop records half-loaded
+  Promise.all([document.fonts.ready, ...$$('img').map(i => i.decode?.().catch(() => {}))])
+    .then(() => {
+      // ?t=11.5 freezes on that second — handy for grabbing a cover image for the reel
+      const at = parseFloat(new URLSearchParams(location.search).get('t'));
+      if (isNaN(at)) restart(); else tl.pause(at);
+    });
+  tl.pause();
+
+  // Hooks for the MP4 exporter (trailer-assets/export_video.py): wait until ready, then seek frame by frame.
+  window.__ready = Promise.all([document.fonts.ready, ...$$('img').map(i => i.decode?.().catch(() => {}))]);
+  window.__seek = (sec) => { music.pause(); tl.pause(sec); return true; };
+</script>
+</body>
+</html>
