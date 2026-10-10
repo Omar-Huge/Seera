@@ -243,9 +243,9 @@ const MENU = {
     en: { title: "Add-ons",   note: "Load it up." },
     ar: { title: "الإضافات", note: "حمّله." },
     items: [
-      { id: "strips", price: 0.4, en: "Strips",  ar: "ستربس" },
-      { id: "beef",   price: 0.5, en: "Beef",    ar: "لحم" },
-      { id: "hotdog", price: 0.3, en: "Hot Dog", ar: "هوت دوق" },
+      { id: "strips", price: 0.5, en: "Strips",  ar: "ستربس" },
+      { id: "beef",   price: 0.7, en: "Beef",    ar: "لحم" },
+      { id: "hotdog", price: 0.4, en: "Hot Dog", ar: "هوت دوق" },
     ],
   },
   /* `free: true` suppresses the price everywhere — menu card, builder and the
